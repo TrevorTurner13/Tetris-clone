@@ -18,11 +18,7 @@ PlayScreen::PlayScreen() {
     mPlayArea->Position(Graphics::SCREEN_WIDTH * 0.325f, Graphics::SCREEN_HEIGHT * 0.5f);
     mPlayArea->Scale(Vector2(6.0f, 6.0f));
 
-    delete mBlock;
-    mBlock = new Player();
-    mBlock->Parent(this);
-    mBlock->Position(Graphics::SCREEN_WIDTH * 0.3f, Graphics::SCREEN_HEIGHT * 0.1f);
-    mBlock->Active(true);
+    mBlock = nullptr;
 
 }
 
@@ -39,8 +35,8 @@ PlayScreen::~PlayScreen() {
     delete mPlayArea;
     mPlayArea = nullptr;
 
-   /* delete mLevel;
-    mLevel = nullptr;*/
+    delete mLevel;
+    mLevel = nullptr;
 
     delete mBlock;
     mBlock = nullptr;
@@ -51,7 +47,7 @@ void PlayScreen::Update() {
     mPlayArea->Update();
     mSideBar->Update();
     
-    /*if (mGameStarted) {
+    if (mGameStarted) {
         if (!mLevelStarted) {
             StartNextLevel();
         }
@@ -62,23 +58,23 @@ void PlayScreen::Update() {
         if (mCurrentStage > 0) {
             mSideBar->Update();
         }
-        mPlayer->Update();
+        mBlock->Update();
     }
     else {
         if (!Mix_PlayingMusic()) {
             mGameStarted = true;
         }
-    }*/
+    }
     
-    mBlock->Update();
+    //mBlock->Update();
 }
 
 void PlayScreen::Render() {
     mPlayArea->Render();
     mSideBar->Render();
-    mBlock->Render();
+   // mBlock->Render();
 
-    /*if (mGameStarted && mLevelStarted) {
+    if (mGameStarted && mLevelStarted) {
         mLevel->Render();
     }
 
@@ -88,36 +84,36 @@ void PlayScreen::Render() {
             mLevel->Render();
         }
 
-        mPlayer->Render();
-    }*/
+        mBlock->Render();
+    }
 }
 
-//void PlayScreen::StartNewGame() {
-//    mSideBar->SetLines(0);
-//    mSideBar->SetLevel(mSideBar->GetLines());
-//    mGameStarted = true;
-//    mLevelStarted = false;
-//    mCurrentStage = 0;
-//
-//    mAudio->PauseMusic();
-//    mAudio->PlayMusic("Music/03. A-Type Music (Korobeiniki).mp3", -1);
-//
-//    delete mPlayer;
-//    mPlayer = new Player();
-//    mPlayer->Parent(this);
-//    mPlayer->Position(Graphics::SCREEN_WIDTH * 0.4f, Graphics::SCREEN_HEIGHT * 0.2f);
-//    mPlayer->Active(false);
-//
-//    mSideBar->SetScore(0);
-//    mSideBar->SetLines(0);
-//    mSideBar->SetLevel(0);
-//   
-//}
-//
-//void PlayScreen::StartNextLevel() {
-//    mCurrentStage += 1;
-//    mLevelStarted = true;
-//
-//    delete mLevel;
-//    mLevel = new Level(mCurrentStage, mSideBar, mPlayer);
-//}
+void PlayScreen::StartNewGame() {
+    mSideBar->SetLines(0);
+    mSideBar->SetLevel(mSideBar->GetLines());
+    mGameStarted = true;
+    mLevelStarted = false;
+    mCurrentStage = 0;
+
+    mAudio->PauseMusic();
+    mAudio->PlayMusic("Music/03. A-Type Music (Korobeiniki).mp3", -1);
+
+    delete mBlock;
+    mBlock = new Player();
+    mBlock->Parent(this);
+    mBlock->Position(Graphics::SCREEN_WIDTH * 0.36f, 24.0f);
+    mBlock->Active(false);
+
+    mSideBar->SetScore(0);
+    mSideBar->SetLines(0);
+    mSideBar->SetLevel(0);
+   
+}
+
+void PlayScreen::StartNextLevel() {
+    mCurrentStage += 1;
+    mLevelStarted = true;
+
+    delete mLevel;
+    mLevel = new Level(mCurrentStage, mSideBar, mBlock);
+}

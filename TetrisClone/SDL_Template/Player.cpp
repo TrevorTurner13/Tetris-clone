@@ -1,21 +1,31 @@
 #include "Player.h"
 
 void Player::HandleMovement() {
+    Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
     if (mInput->KeyDown(SDL_SCANCODE_RIGHT)) {
         Translate(Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
     }
     else if (mInput->KeyDown(SDL_SCANCODE_LEFT)) {
         Translate(-Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
     }
+    else if (mInput->KeyDown(SDL_SCANCODE_DOWN)) {
+        Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
+    }
 
     Vector2 pos = Position(Local);
-    if (pos.x < mMoveBounds.x) {
-        pos.x = mMoveBounds.x;
+    if (pos.x < mMoveBoundsX.x) {
+        pos.x = mMoveBoundsX.x;
     }
-    else if (pos.x > mMoveBounds.y) {
-        pos.x = mMoveBounds.y;
+    else if (pos.x > mMoveBoundsX.y) {
+        pos.x = mMoveBoundsX.y;
     }
-
+    if (pos.y < mMoveBoundsY.x) {
+        pos.y = mMoveBoundsY.x;
+    }
+    else if (pos.y > mMoveBoundsY.y) {
+        pos.y = mMoveBoundsY.y;
+        mIsDown = true;
+    }
     Position(pos);
 }
 
@@ -25,9 +35,9 @@ Player::Player() {
     mAudio = AudioManager::Instance();
 
     mVisible = true;
-    //mInPlay = true;
-   /* mIsDown = false;
-    mNextBlock = false;*/
+    mInPlay = true;
+    mIsDown = false;
+    mNextBlock = false;
 
     mScore = 0;
 
@@ -36,8 +46,11 @@ Player::Player() {
     mBlock->Position(Vec2_Zero);
     mBlock->Scale(Vector2(6.0f, 6.0f));
 
-    mMoveSpeed = 300.0f;
-    mMoveBounds = Vector2(0.0f, 800.0f);
+    mMoveSpeed = 48.0f;
+
+    mMoveBoundsX = Vector2(117.0f, 549.0f);
+    mMoveBoundsY = Vector2(0.0f, 840.0f);
+
 
 }
 
@@ -55,13 +68,13 @@ void Player::Visible(bool visible) {
     mVisible = visible;
 }
 
-//void Player::InPlay(bool inPlay) {
-//    mInPlay = inPlay;
-//}
-//
-//void Player::NextBlock(bool nextBlock) {
-//    mNextBlock = nextBlock;
-//}
+void Player::InPlay(bool inPlay) {
+    mInPlay = inPlay;
+}
+
+void Player::NextBlock(bool nextBlock) {
+    mNextBlock = nextBlock;
+}
 
 int Player::Score() {
     return mScore;
@@ -71,22 +84,24 @@ void Player::AddScore(int change) {
     mScore += change;
 }
 
-//void Player::IsDown(bool isDown) {
-//    mIsDown = isDown;
-//    mScore += 10;
-//}
+void Player::IsDown(bool isDown) {
+    mIsDown = isDown;
+    mInPlay = false;
+    
+    mScore += 10;
+}
 
 
 
 void Player::Update() {
-   /* if (mIsDown) {
+    if (mIsDown) {
         mInPlay = false;
     }
-    else {*/
+    else {
         if (Active()) {
             HandleMovement();
         }
-   /* }*/
+    }
 }
 
 void Player::Render() {

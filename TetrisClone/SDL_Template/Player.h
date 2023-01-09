@@ -17,14 +17,16 @@ private:
     /*Blocks* mBlock;*/
 
     bool mVisible;
-    /*bool mInPlay;
+    bool mInPlay;
     bool mIsDown;
-    bool mNextBlock;*/
+    bool mNextBlock;
 
     int mScore;
 
     float mMoveSpeed;
-    Vector2 mMoveBounds;
+    Vector2 mMove;
+    Vector2 mMoveBoundsX;
+    Vector2 mMoveBoundsY;
 
     void HandleMovement();
 
@@ -32,14 +34,28 @@ public:
     Player();
     ~Player();
 
+    struct Block {
+        Texture* mBlock;
+        bool active;
+    };
+
+    struct Shape {
+        Texture* mBlock;
+        bool matrix[4][4];
+        double x, y;
+        int size;
+    };
+
+    Shape DisplayShape();
+
     void Visible(bool visible);
-  /*  void InPlay(bool inPlay);
-    void NextBlock(bool nextBlock);*/
+    void InPlay(bool inPlay);
+    void NextBlock(bool nextBlock);
 
     int Score();
     void AddScore(int change);
 
-    /*void IsDown(bool isDown);*/
+    void IsDown(bool isDown);
 
     void Update() override;
     void Render() override;

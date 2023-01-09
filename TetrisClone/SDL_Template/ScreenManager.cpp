@@ -62,7 +62,7 @@ void ScreenManager::Update() {
             mCurrentScreen = PLAY;
             mAudio->PauseMusic();
             mAudio->PlayMusic("Music/03. A-Type Music (Korobeiniki).mp3", -1);
-         /*   mPlayScreen->StartNewGame();*/
+            mPlayScreen->StartNewGame();
         }
 
         break;
