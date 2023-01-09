@@ -7,6 +7,8 @@
 #include "Scoreboard.h"
 #include "Blocks.h"
 #include "PlaySideBar.h"
+#include "Level.h"
+#include "Player.h"
 
 using namespace SDLFramework;
 
@@ -20,11 +22,19 @@ private:
     GameEntity* mPlayScreen;
     PlaySideBar* mSideBar;
     Texture* mPlayArea;
+    Player* mPlayer;
    /* Scoreboard* mScore;
     Scoreboard* mLevel;
     Scoreboard* mLines;*/
 
    // Blocks* mBlock;
+    bool mGameStarted;
+
+    Level* mLevel;
+    bool mLevelStarted;
+    int mCurrentStage;
+
+    void StartNextLevel();
 
 public:
     PlayScreen();
