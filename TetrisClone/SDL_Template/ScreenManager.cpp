@@ -67,6 +67,7 @@ void ScreenManager::Update() {
 
         break;
     case PLAY:
+        mPlayScreen->Update();
         if (mInput->KeyPressed(SDL_SCANCODE_ESCAPE)) {
             mCurrentScreen = START;
             mAudio->PauseMusic();
