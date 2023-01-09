@@ -1,22 +1,42 @@
 #include "Player.h"
 
+void Player::HandleMovement() {
+    if (mInput->KeyDown(SDL_SCANCODE_RIGHT)) {
+        Translate(Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
+    }
+    else if (mInput->KeyDown(SDL_SCANCODE_LEFT)) {
+        Translate(-Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
+    }
+
+    Vector2 pos = Position(Local);
+    if (pos.x < mMoveBounds.x) {
+        pos.x = mMoveBounds.x;
+    }
+    else if (pos.x > mMoveBounds.y) {
+        pos.x = mMoveBounds.y;
+    }
+
+    Position(pos);
+}
+
 Player::Player() {
     mTimer = Timer::Instance();
     mInput = InputManager::Instance();
     mAudio = AudioManager::Instance();
 
-    mVisible = false;
-    mInPlay = false;
-    mIsDown = false;
-    mNextBlock = false;
+    mVisible = true;
+    //mInPlay = true;
+   /* mIsDown = false;
+    mNextBlock = false;*/
 
     mScore = 0;
 
-    mBlock = new Blocks();
+    mBlock = new Texture("TetrisBackground.png", 279, 15, 8, 8);
     mBlock->Parent(this);
-    mBlock->Position(100.0f, 300.0f);
+    mBlock->Position(Vec2_Zero);
+    mBlock->Scale(Vector2(6.0f, 6.0f));
 
-    mMoveSpeed = 100.0f;
+    mMoveSpeed = 300.0f;
     mMoveBounds = Vector2(0.0f, 800.0f);
 
 }
@@ -35,13 +55,13 @@ void Player::Visible(bool visible) {
     mVisible = visible;
 }
 
-void Player::InPlay(bool inPlay) {
-    mInPlay = inPlay;
-}
-
-void Player::NextBlock(bool nextBlock) {
-    mNextBlock = nextBlock;
-}
+//void Player::InPlay(bool inPlay) {
+//    mInPlay = inPlay;
+//}
+//
+//void Player::NextBlock(bool nextBlock) {
+//    mNextBlock = nextBlock;
+//}
 
 int Player::Score() {
     return mScore;
@@ -51,48 +71,28 @@ void Player::AddScore(int change) {
     mScore += change;
 }
 
-void Player::IsDown(bool isDown) {
-    mIsDown = isDown;
-    mScore += 10;
-}
+//void Player::IsDown(bool isDown) {
+//    mIsDown = isDown;
+//    mScore += 10;
+//}
 
-void Player::HandleMovement() {
-    if (mInput->KeyDown(SDL_SCANCODE_RIGHT)) {
-        Translate(Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-    }
-    else if (mInput->KeyDown(SDL_SCANCODE_LEFT)) {
-        Translate(-Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-    }
 
-    Vector2 pos = Position(Local);
-    /*if (pos.x < mMoveBounds.x + mBlock->ScaledDimensions().x * 0.5f) {
-        pos.x = mMoveBounds.x + mBlock->ScaledDimensions().x * 0.5f;
-    }
-    else if (pos.x > mMoveBounds.y - mBlock->ScaledDimensions().x * 0.5f) {
-        pos.x = mMoveBounds.y - mBlock->ScaledDimensions().x * 0.5f;
-    }*/
-
-    Position(pos);
-}
 
 void Player::Update() {
-    if (mIsDown) {
+   /* if (mIsDown) {
+        mInPlay = false;
     }
-    else {
+    else {*/
         if (Active()) {
             HandleMovement();
         }
-    }
+   /* }*/
 }
 
 void Player::Render() {
     if (mVisible) {
-       /* if (mAnimating) {
-            mDeathAnimation->Render();
-        }*/
-       /* else {*/
-            mBlock->Render();
-        /*}*/
+        mBlock->Render();
     }
+    
 }
 

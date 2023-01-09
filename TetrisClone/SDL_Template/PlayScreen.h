@@ -22,27 +22,23 @@ private:
     GameEntity* mPlayScreen;
     PlaySideBar* mSideBar;
     Texture* mPlayArea;
-    Player* mPlayer;
-   /* Scoreboard* mScore;
-    Scoreboard* mLevel;
-    Scoreboard* mLines;*/
+    Player* mBlock;
 
-   // Blocks* mBlock;
-    bool mGameStarted;
+  /*  bool mGameStarted;
 
     Level* mLevel;
     bool mLevelStarted;
     int mCurrentStage;
 
-    void StartNextLevel();
+    void StartNextLevel();*/
 
 public:
     PlayScreen();
     ~PlayScreen();
 
-    bool GameOver();
+    /*bool GameOver();
 
-    void StartNewGame();
+    void StartNewGame();*/
 
     void Update() override;
     void Render() override;

@@ -60,7 +60,9 @@ void ScreenManager::Update() {
         mStartScreen->Update();
         if (mInput->KeyPressed(SDL_SCANCODE_RETURN)) {
             mCurrentScreen = PLAY;
-            mPlayScreen->StartNewGame();
+            mAudio->PauseMusic();
+            mAudio->PlayMusic("Music/03. A-Type Music (Korobeiniki).mp3", -1);
+         /*   mPlayScreen->StartNewGame();*/
         }
 
         break;
