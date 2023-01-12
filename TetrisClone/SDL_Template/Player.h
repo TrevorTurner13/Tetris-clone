@@ -24,29 +24,24 @@ private:
     int mScore;
 
     float mMoveSpeed;
+    Vector2 mDropSpeed;
     Vector2 mMove;
+   
     Vector2 mMoveBoundsX;
     Vector2 mMoveBoundsY;
 
+    float mHeartBeat = 1.0;
+    float mHeartBeatCurrent = mHeartBeat;
+    bool mHeartBeatUpdate = false;
+
     void HandleMovement();
+
+    struct Block;
+    struct Shape;
 
 public:
     Player();
     ~Player();
-
-    struct Block {
-        Texture* mBlock;
-        bool active;
-    };
-
-    struct Shape {
-        Texture* mBlock;
-        bool matrix[4][4];
-        double x, y;
-        int size;
-    };
-
-    Shape DisplayShape();
 
     void Visible(bool visible);
     void InPlay(bool inPlay);
@@ -56,6 +51,7 @@ public:
     void AddScore(int change);
 
     void IsDown(bool isDown);
+    bool GetIsDown() { return mIsDown; }
 
     void Update() override;
     void Render() override;

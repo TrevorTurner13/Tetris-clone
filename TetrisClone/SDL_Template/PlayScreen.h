@@ -23,14 +23,18 @@ private:
     PlaySideBar* mSideBar;
     Texture* mPlayArea;
     Player* mBlock;
+    Player* mBlock1;
+    
 
     bool mGameStarted;
+    
 
     Level* mLevel;
     bool mLevelStarted;
     int mCurrentStage;
 
     void StartNextLevel();
+    void NextBlock();
 
 public:
     PlayScreen();

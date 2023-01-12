@@ -19,6 +19,7 @@ PlayScreen::PlayScreen() {
     mPlayArea->Scale(Vector2(6.0f, 6.0f));
 
     mBlock = nullptr;
+    mBlock1 = nullptr;
 
 }
 
@@ -40,6 +41,10 @@ PlayScreen::~PlayScreen() {
 
     delete mBlock;
     mBlock = nullptr;
+
+    delete mBlock1;
+    mBlock1 = nullptr;
+
 }
 
 
@@ -59,6 +64,14 @@ void PlayScreen::Update() {
             mSideBar->Update();
         }
         mBlock->Update();
+        mBlock1->Update();
+        if (mBlock->GetIsDown()) {
+            if (!mBlock1->Active()) {
+                NextBlock();
+                
+            }
+            mBlock1->Update();
+        }
     }
     else {
         if (!Mix_PlayingMusic()) {
@@ -85,6 +98,10 @@ void PlayScreen::Render() {
         }
 
         mBlock->Render();
+        mBlock1->Render();
+    }
+    if (mBlock->GetIsDown()) {
+        mBlock1->Render();
     }
 }
 
@@ -101,8 +118,14 @@ void PlayScreen::StartNewGame() {
     delete mBlock;
     mBlock = new Player();
     mBlock->Parent(this);
-    mBlock->Position(Graphics::SCREEN_WIDTH * 0.36f, 24.0f);
+    mBlock->Position(357.0f, 24.0f);
     mBlock->Active(false);
+
+    delete mBlock1;
+    mBlock1 = new Player();
+    mBlock1->Parent(this);
+    mBlock1->Position(820.0, 710.0f);
+    mBlock1->Active(false);
 
     mSideBar->SetScore(0);
     mSideBar->SetLines(0);
@@ -117,3 +140,18 @@ void PlayScreen::StartNextLevel() {
     delete mLevel;
     mLevel = new Level(mCurrentStage, mSideBar, mBlock);
 }
+
+void PlayScreen::NextBlock() {
+    mBlock->Active(false);
+    delete mBlock1;
+    mBlock1 = new Player();
+    mBlock1->Parent(this);
+    mBlock1->Position(mBlock->Position());
+    mBlock1->Active(false);
+
+    mBlock->Parent(this);
+    mBlock->Position(357.0f, 24.0f);
+    mBlock->Active(true);
+    mSideBar->SetScore(mBlock->Score());
+}
+

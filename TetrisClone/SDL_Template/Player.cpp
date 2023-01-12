@@ -1,15 +1,20 @@
 #include "Player.h"
 
 void Player::HandleMovement() {
-    Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-    if (mInput->KeyDown(SDL_SCANCODE_RIGHT)) {
-        Translate(Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
+    if (mHeartBeatUpdate) {
+        mHeartBeatUpdate = false;
+        Position(Position() + Vector2(0.0, 48.0));
     }
-    else if (mInput->KeyDown(SDL_SCANCODE_LEFT)) {
-        Translate(-Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
+ 
+    if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
+        Position(Position() + mMove);
+       
     }
-    else if (mInput->KeyDown(SDL_SCANCODE_DOWN)) {
-        Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
+    else if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
+        Position(Position() - mMove);
+    }
+    else if (mInput->KeyPressed(SDL_SCANCODE_DOWN)) {
+        Position(Position() + mDropSpeed);
     }
 
     Vector2 pos = Position(Local);
@@ -24,10 +29,22 @@ void Player::HandleMovement() {
     }
     else if (pos.y > mMoveBoundsY.y) {
         pos.y = mMoveBoundsY.y;
-        mIsDown = true;
+        IsDown(true);
     }
     Position(pos);
 }
+
+struct Player::Block {
+    Texture* mBlock;
+    bool active;
+};
+
+struct Player::Shape {
+    Texture* mBlock;
+    bool matrix[4][4];
+    double x, y;
+    int size;
+};
 
 Player::Player() {
     mTimer = Timer::Instance();
@@ -46,11 +63,19 @@ Player::Player() {
     mBlock->Position(Vec2_Zero);
     mBlock->Scale(Vector2(6.0f, 6.0f));
 
-    mMoveSpeed = 48.0f;
+    Shape blocks[1] = { {{mBlock},
+                {{0,0,1,0} // L BLOCK
+                ,{1,1,1,0}
+                ,{0,0,0,0}
+                ,{0,0,0,0}
+                },5,4,3} };
+   
+    mDropSpeed = Vector2(0.0f, 48.0f);
+    mMove = Vector2(48.0f, 0.0f);
+    mMoveSpeed = 330.0f;
 
     mMoveBoundsX = Vector2(117.0f, 549.0f);
     mMoveBoundsY = Vector2(0.0f, 840.0f);
-
 
 }
 
@@ -70,10 +95,13 @@ void Player::Visible(bool visible) {
 
 void Player::InPlay(bool inPlay) {
     mInPlay = inPlay;
+
 }
 
 void Player::NextBlock(bool nextBlock) {
     mNextBlock = nextBlock;
+    Player mBlock();
+    mNextBlock = false;
 }
 
 int Player::Score() {
@@ -86,14 +114,20 @@ void Player::AddScore(int change) {
 
 void Player::IsDown(bool isDown) {
     mIsDown = isDown;
-    mInPlay = false;
-    
-    mScore += 10;
+    mInPlay = false;  
+    AddScore(10);
+    NextBlock(true);
 }
 
 
 
 void Player::Update() {
+    mHeartBeatCurrent -= mTimer->DeltaTime();
+    if (mHeartBeatCurrent <= 0) {
+        mHeartBeatUpdate = true;
+        mHeartBeatCurrent = mHeartBeat;
+    }
+
     if (mIsDown) {
         mInPlay = false;
     }
