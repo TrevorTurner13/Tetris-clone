@@ -9,6 +9,7 @@
 #include "PlaySideBar.h"
 #include "Level.h"
 #include "Player.h"
+#include "PlayArea.h"
 
 using namespace SDLFramework;
 
@@ -21,7 +22,7 @@ private:
 
     GameEntity* mPlayScreen;
     PlaySideBar* mSideBar;
-    Texture* mPlayArea;
+    PlayArea* mPlayArea;
     Player* mBlock;
     Player* mBlock1;
     

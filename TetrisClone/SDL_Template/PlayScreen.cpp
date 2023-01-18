@@ -13,10 +13,10 @@ PlayScreen::PlayScreen() {
     mSideBar->Parent(this);
     mSideBar->Position(Graphics::SCREEN_WIDTH * 0.825f, Graphics::SCREEN_HEIGHT * 0.5f);
 
-    mPlayArea = new Texture("TetrisBackground.png", 0, 0, 105, 144);
+    mPlayArea = new PlayArea();//new Texture("TetrisBackground.png", 0, 0, 105, 144);
     mPlayArea->Parent(mPlayScreen);
     mPlayArea->Position(Graphics::SCREEN_WIDTH * 0.325f, Graphics::SCREEN_HEIGHT * 0.5f);
-    mPlayArea->Scale(Vector2(6.0f, 6.0f));
+    //mPlayArea->Scale(Vector2(6.0f, 6.0f));
 
     mBlock = nullptr;
     mBlock1 = nullptr;
@@ -127,7 +127,7 @@ void PlayScreen::StartNewGame() {
     mBlock1->Position(820.0, 710.0f);
     mBlock1->Active(false);
 
-    mSideBar->SetScore(0);
+    mSideBar->SetScore(10);
     mSideBar->SetLines(0);
     mSideBar->SetLevel(0);
    
@@ -146,12 +146,9 @@ void PlayScreen::NextBlock() {
     delete mBlock1;
     mBlock1 = new Player();
     mBlock1->Parent(this);
-    mBlock1->Position(mBlock->Position());
-    mBlock1->Active(false);
-
-    mBlock->Parent(this);
-    mBlock->Position(357.0f, 24.0f);
-    mBlock->Active(true);
+    mBlock1->Position(357.0f, 24.0f);
+    mBlock1->Active(true);
+    mBlock->AddScore(100);
     mSideBar->SetScore(mBlock->Score());
 }
 

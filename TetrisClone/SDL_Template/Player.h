@@ -3,6 +3,7 @@
 #include "AnimatedTexture.h"
 #include "InputManager.h"
 #include "AudioManager.h"
+#include "PlayArea.h"
 //#include "Blocks.h"
 
 using namespace SDLFramework;
@@ -14,6 +15,7 @@ private:
     AudioManager* mAudio;
 
     Texture* mBlock;
+    PlayArea* mPlayArea;
     /*Blocks* mBlock;*/
 
     bool mVisible;
@@ -49,6 +51,7 @@ public:
 
     int Score();
     void AddScore(int change);
+    bool PlayerPositionOnGrid(Vector2* position);
 
     void IsDown(bool isDown);
     bool GetIsDown() { return mIsDown; }
