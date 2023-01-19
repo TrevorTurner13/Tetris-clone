@@ -10,6 +10,7 @@ using namespace SDLFramework;
 
 class Player : public GameEntity {
 private:
+  
     Timer* mTimer;
     InputManager* mInput;
     AudioManager* mAudio;
@@ -17,6 +18,8 @@ private:
     Texture* mBlock;
     PlayArea* mPlayArea;
     /*Blocks* mBlock;*/
+    float mGrid[18][10];
+    
 
     bool mVisible;
     bool mInPlay;
@@ -45,13 +48,16 @@ public:
     Player();
     ~Player();
 
+    float GetPlayerGrid();
     void Visible(bool visible);
     void InPlay(bool inPlay);
     void NextBlock(bool nextBlock);
 
     int Score();
     void AddScore(int change);
-    bool PlayerPositionOnGrid(Vector2* position);
+    int pixelToGridX(float x);
+    int pixelToGridY(float y);
+   // bool PlayerPositionOnGrid(Vector2 position);
 
     void IsDown(bool isDown);
     bool GetIsDown() { return mIsDown; }

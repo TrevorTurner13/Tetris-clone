@@ -21,6 +21,7 @@ PlayScreen::PlayScreen() {
     mBlock = nullptr;
     mBlock1 = nullptr;
 
+    mScore = 0;
 }
 
 PlayScreen::~PlayScreen() {
@@ -64,13 +65,14 @@ void PlayScreen::Update() {
             mSideBar->Update();
         }
         mBlock->Update();
-        mBlock1->Update();
+        if (mLevel->CheckGridTrue(mBlock->pixelToGridY(mBlock->Position().y), mBlock->pixelToGridX(mBlock->Position().x))) {
+            mBlock->Position(mBlock->Position().x, mBlock->Position().y - 1);
+            mBlock->IsDown(true);
+        }
         if (mBlock->GetIsDown()) {
-            if (!mBlock1->Active()) {
-                NextBlock();
-                
-            }
-            mBlock1->Update();
+            NextBlock();
+            mLevel->CheckForLines();
+            mBlock->Update();
         }
     }
     else {
@@ -127,7 +129,7 @@ void PlayScreen::StartNewGame() {
     mBlock1->Position(820.0, 710.0f);
     mBlock1->Active(false);
 
-    mSideBar->SetScore(10);
+    mSideBar->SetScore(0);
     mSideBar->SetLines(0);
     mSideBar->SetLevel(0);
    
@@ -142,13 +144,17 @@ void PlayScreen::StartNextLevel() {
 }
 
 void PlayScreen::NextBlock() {
+   
+    mSideBar->SetScore(mScore + 100);
+    mScore = mScore + 100;
     mBlock->Active(false);
-    delete mBlock1;
-    mBlock1 = new Player();
-    mBlock1->Parent(this);
-    mBlock1->Position(357.0f, 24.0f);
-    mBlock1->Active(true);
-    mBlock->AddScore(100);
-    mSideBar->SetScore(mBlock->Score());
+    mLevel->SetGridPointTrue(mBlock->pixelToGridX(mBlock->Position().x), mBlock->pixelToGridY(mBlock->Position().y));
+    delete mBlock;
+    mBlock = new Player();
+    mBlock->Parent(this);
+    mBlock->Position(357.0f, 24.0f);
+    mBlock->Active(true);
+    
+    
 }
 

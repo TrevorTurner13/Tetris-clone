@@ -1,47 +1,14 @@
 #include "Player.h"
 
-//void Player::HandleMovement() {
-//    if (mHeartBeatUpdate) {
-//        mHeartBeatUpdate = false;
-//        Position(Position() + Vector2(0.0, 48.0));
-//    }
-// 
-//    if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
-//        Position(Position() + mMove);
-//       
-//    }
-//    else if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
-//        Position(Position() - mMove);
-//    }
-//    else if (mInput->KeyPressed(SDL_SCANCODE_DOWN)) {
-//        Position(Position() + mDropSpeed);
-//    }
-//
-//    Vector2 pos = Position(Local);
-//    if (pos.x < mMoveBoundsX.x) {
-//        pos.x = mMoveBoundsX.x;
-//    }
-//    else if (pos.x > mMoveBoundsX.y) {
-//        pos.x = mMoveBoundsX.y;
-//    }
-//    if (pos.y < mMoveBoundsY.x) {
-//        pos.y = mMoveBoundsY.x;
-//    }
-//    else if (pos.y > mMoveBoundsY.y) {
-//        pos.y = mMoveBoundsY.y;
-//        IsDown(true);
-//    }
-//    Position(pos);
-//}
 void Player::HandleMovement() {
     if (mHeartBeatUpdate) {
         mHeartBeatUpdate = false;
-        Position(Position() + Vector2(0.0f, 48.0f));
+        Position(Position() + Vector2(0.0, 48.0));
     }
-
+ 
     if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
         Position(Position() + mMove);
-
+       
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
         Position(Position() - mMove);
@@ -62,7 +29,7 @@ void Player::HandleMovement() {
     }
     else if (pos.y > mMoveBoundsY.y) {
         pos.y = mMoveBoundsY.y;
-        //IsDown(true);
+        IsDown(true);
     }
     Position(pos);
 }
@@ -96,6 +63,8 @@ Player::Player() {
     mBlock->Position(Vec2_Zero);
     mBlock->Scale(Vector2(6.0f, 6.0f));
 
+    
+
     //Shape blocks[1] = { {{mBlock},
     //            {{0,0,1,0} // L BLOCK
     //            ,{1,1,1,0}
@@ -110,6 +79,16 @@ Player::Player() {
     mMoveBoundsX = Vector2(117.0f, 549.0f);
     mMoveBoundsY = Vector2(0.0f, 840.0f);
      
+}
+
+float Player::GetPlayerGrid() {
+    for (int i = 0; i < 18; ++i) {
+        for (int j = 0; j < 10; ++j) {
+           
+
+            return mGrid[i][j];
+        }
+    }
 }
 
 Player::~Player() {
@@ -175,6 +154,21 @@ void Player::Render() {
     if (mVisible) {
         mBlock->Render();
     }
-    
+
 }
+
+int Player::pixelToGridX(float x) {
+    int gridX = (x - 117) / 48;
+
+    return gridX;
+}
+
+int Player::pixelToGridY(float y) {
+    int gridY = (y - 24) / 48;
+
+    return gridY;
+}
+
+
+
 

@@ -13,15 +13,14 @@ private:
     //const int COLUMNS = 10;
 
     Timer* mTimer;
-    /*InputManager* mInput;*/
     GameEntity* mPlayArea;
     PlaySideBar* mSideBar;
     Player* mPlayer;
 
-    /*Texture* mBlock;
+    Texture* mBlock;
 
     bool mGrid[18][10];
-    Texture* mGridDisplay[18][10];*/
+    Texture* mGridDisplay[18][10];
 
     int mStage;
     bool mStageStarted;
@@ -31,28 +30,16 @@ private:
     Scoreboard* mStageNumber;
     float mStageSpeedUpdate;
 
-   /* float mMoveSpeed;
-    Vector2 mDropSpeed;
-    Vector2 mMove;
-
-    Vector2 mMoveBoundsX;
-    Vector2 mMoveBoundsY;
-
-    float mHeartBeat = 1.0;
-    float mHeartBeatCurrent = mHeartBeat;
-    bool mHeartBeatUpdate = false;*/
-
-    /*void HandleMovement();*/
-    void StartStage();
-    void CheckForLines();
-    void CheckPlayerPosition();
-    void SetGridPointTrue();
-
-   
+    Vector2 gridPosition;
 
 public:
     Level(int stage, PlaySideBar* sideBar, Player* player);
     ~Level();
+
+    void StartStage();
+    void CheckForLines();
+    bool CheckGridTrue(int x, int y);
+    void SetGridPointTrue(int x, int y);
 
     void Update() override;
     void Render() override;

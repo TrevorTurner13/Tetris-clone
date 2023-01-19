@@ -25,10 +25,10 @@ private:
     PlayArea* mPlayArea;
     Player* mBlock;
     Player* mBlock1;
-    
-
+   
     bool mGameStarted;
-    
+
+    int mScore;
 
     Level* mLevel;
     bool mLevelStarted;

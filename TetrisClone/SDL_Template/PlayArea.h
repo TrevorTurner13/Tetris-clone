@@ -9,16 +9,10 @@ class PlayArea : public GameEntity {
 private:
 	Texture* mPlayArea;
 
-	Texture* mBlock;
-
-	bool mGrid[18][10];
-	Texture* mGridDisplay[18][10];
-
 public:
 	PlayArea();
 	~PlayArea();
 
-	
 	void CheckForLines();
 
 	void Update() override;
