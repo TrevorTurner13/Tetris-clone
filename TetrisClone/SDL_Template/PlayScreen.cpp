@@ -72,6 +72,7 @@ void PlayScreen::Update() {
         if (mBlock->GetIsDown()) {
             NextBlock();
             mLevel->CheckForLines();
+            mLevel->Update();
             mBlock->Update();
         }
     }
