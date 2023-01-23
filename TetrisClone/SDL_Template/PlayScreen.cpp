@@ -145,9 +145,8 @@ void PlayScreen::StartNextLevel() {
 }
 
 void PlayScreen::NextBlock() {
-   
-    mSideBar->SetScore(mScore + 100);
-    mScore = mScore + 100;
+    mLevel->AddScore(100);
+    mSideBar->SetScore(mLevel->Score());
     mBlock->Active(false);
     mLevel->SetGridPointTrue(mBlock->pixelToGridX(mBlock->Position().x), mBlock->pixelToGridY(mBlock->Position().y));
     delete mBlock;

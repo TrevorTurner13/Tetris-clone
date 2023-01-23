@@ -85,32 +85,45 @@ void Level::CheckForLines() {
             mGrid[i][7] = false;
             mGrid[i][8] = false;
             mGrid[i][9] = false;
+            AddScore(1000);
+            mSideBar->SetScore(mScore);
+            mSideBar->SetLines(mSideBar->GetLines() + 1);
+            mSideBar->SetLevel(mSideBar->GetLines());
             //DropLines();
-            for (int j = 0; j < 10; ++j) {
-                if (!mGrid[i][0] &&
-                    !mGrid[i][1] &&
-                    !mGrid[i][2] &&
-                    !mGrid[i][3] &&
-                    !mGrid[i][4] &&
-                    !mGrid[i][5] &&
-                    !mGrid[i][6] &&
-                    !mGrid[i][7] &&
-                    !mGrid[i][8] &&
-                    !mGrid[i][9]) {
-                    do {
-                        if (mGrid[i - 1][j]) {
-                            mGrid[i][j] = true;
-                            mGrid[i - 1][j] = false;
-                        }
-                        if (j < 9) {
-                            ++j;
-                        }
-                        else {
-                            break;
-                        }
-                    } while (j < 10);
+            do {
+                for (int j = 0; j < 10; ++j) {
+                    if (!mGrid[i][0] &&
+                        !mGrid[i][1] &&
+                        !mGrid[i][2] &&
+                        !mGrid[i][3] &&
+                        !mGrid[i][4] &&
+                        !mGrid[i][5] &&
+                        !mGrid[i][6] &&
+                        !mGrid[i][7] &&
+                        !mGrid[i][8] &&
+                        !mGrid[i][9]) {
+                        do {
+                            if (mGrid[i - 1][j]) {
+                                mGrid[i][j] = true;
+                                mGrid[i - 1][j] = false;
+                                
+                            }
+                            if (j < 9) {
+                                ++j;
+                            }
+                            else {
+                                break;
+                            }
+                        } while (j < 10);                       
+                    }
                 }
-            }           
+                if (i > 0) {
+                    --i;
+                }
+                else {
+                    break;
+                }
+            } while (i > 0);
         }
     }
 }
@@ -127,34 +140,20 @@ void Level::DropLines() {
                 !mGrid[i][6] &&
                 !mGrid[i][7] &&
                 !mGrid[i][8] &&
-                !mGrid[i][9] &&
-                mGrid[i - 1][j]) {
-                mGrid[i][j] = true;
-                mGrid[i - 1][j] = false;
-                if (i <= 18) {
-                    ++i;
-                }
-                else {
-                    break;
-                }
-                if (i <= 18) {
-                    ++i;
-                }
-                else {
-                    break;
-                }
+                !mGrid[i][9]) {
+                do {
+                    if (mGrid[i - 1][j]) {
+                        mGrid[i][j] = true;
+                        mGrid[i - 1][j] = false;
+                    }
+                    if (j < 9) {
+                        ++j;
+                    }
+                    else {
+                        break;
+                    }
+                } while (j < 10);
             }
-           
-            /*mGridDisplay[i - 1][0]->Position(mGridDisplay[i - 1][0]->Position().x, mGridDisplay[i - 1][0]->Position().y + 1);
-            mGridDisplay[i - 1][1]->Position(mGridDisplay[i - 1][1]->Position().x, mGridDisplay[i - 1][1]->Position().y + 1);
-            mGridDisplay[i - 1][2]->Position(mGridDisplay[i - 1][2]->Position().x, mGridDisplay[i - 1][2]->Position().y + 1);
-            mGridDisplay[i - 1][3]->Position(mGridDisplay[i - 1][3]->Position().x, mGridDisplay[i - 1][3]->Position().y + 1);
-            mGridDisplay[i - 1][4]->Position(mGridDisplay[i - 1][4]->Position().x, mGridDisplay[i - 1][4]->Position().y + 1);
-            mGridDisplay[i - 1][5]->Position(mGridDisplay[i - 1][5]->Position().x, mGridDisplay[i - 1][5]->Position().y + 1);
-            mGridDisplay[i - 1][6]->Position(mGridDisplay[i - 1][6]->Position().x, mGridDisplay[i - 1][6]->Position().y + 1);
-            mGridDisplay[i - 1][7]->Position(mGridDisplay[i - 1][7]->Position().x, mGridDisplay[i - 1][7]->Position().y + 1);
-            mGridDisplay[i - 1][8]->Position(mGridDisplay[i - 1][8]->Position().x, mGridDisplay[i - 1][8]->Position().y + 1);
-            mGridDisplay[i - 1][9]->Position(mGridDisplay[i - 1][9]->Position().x, mGridDisplay[i - 1][9]->Position().y + 1);*/
         }
     }
 }
@@ -173,3 +172,6 @@ void Level::SetGridPointTrue(int x, int y) {
     mGrid[y][x] = true;
 }
 
+void Level::AddScore(int change) {
+    mScore += change;
+}

@@ -29,6 +29,7 @@ private:
 
     Scoreboard* mStageNumber;
     float mStageSpeedUpdate;
+    int mScore = 0;
 
     Vector2 gridPosition;
 
@@ -36,6 +37,8 @@ public:
     Level(int stage, PlaySideBar* sideBar, Player* player);
     ~Level();
 
+    int Score() { return mScore; }
+    void AddScore(int change);
     void StartStage();
     void CheckForLines();
     void DropLines();
