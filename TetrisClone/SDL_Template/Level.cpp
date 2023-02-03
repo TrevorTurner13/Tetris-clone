@@ -4,16 +4,58 @@ void Level::StartStage() {
     mStageStarted = true;
 }
 
+//void Level::HandleMovement() {
+//    if (mHeartBeatUpdate) {
+//        mHeartBeatUpdate = false;
+//        mPlayer->Position(mPlayer->Position() + Vector2(0.0, 48.0));
+//    }
+//
+//    if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
+//        mPlayer->Position(mPlayer->Position() + mMove);
+//
+//    }
+//    else if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
+//        mPlayer->Position(mPlayer->Position() - mMove);
+//    }
+//    else if (mInput->KeyPressed(SDL_SCANCODE_DOWN)) {
+//        mPlayer->Position(mPlayer->Position() + mDropSpeed);
+//    }
+//
+//    Vector2 pos = mPlayer->Position(Local);
+//
+//    if (pos.x < mMoveBoundsX.x) {
+//        pos.x = mMoveBoundsX.x;
+//    }
+//    else if (pos.x > mMoveBoundsX.y) {
+//        pos.x = mMoveBoundsX.y;
+//    }
+//    if (pos.y < mMoveBoundsY.x) {
+//        pos.y = mMoveBoundsY.x;
+//    }
+//    else if (pos.y > mMoveBoundsY.y) {
+//        pos.y = mMoveBoundsY.y;
+//        IsDown(true);
+//    }
+//    mPlayer->Position(pos);
+//}
 
 Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
+    mInput = InputManager::Instance();
     mTimer = Timer::Instance();
     mSideBar = sideBar;
     mSideBar->SetLevel(stage);
-
+    /*mInPlay = true;
+    mIsDown = false;*/
     mStage = stage;
     mStageStarted = false;
 
     mPlayer = player;
+   /* mDropSpeed = Vector2(0.0f, 48.0f);
+    mMove = Vector2(48.0f, 0.0f);
+    mMoveSpeed = 330.0f;
+
+    mMoveBoundsX = Vector2(117.0f, 549.0f);
+    mMoveBoundsY = Vector2(0.0f, 840.0f);*/
     
 
     mBlock = new Texture("TetrisBackground.png", 279, 15, 8, 8);
@@ -23,7 +65,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
 
     for (int i = 0; i < 18; ++i) {
         for (int j = 0; j < 10; ++j) {
-            mGrid[i][j] = false;
+            mPlayGrid[i][j] = false;
             //mPlayer->Position(mGrid[0][5]);
             mGridDisplay[i][j] = new Texture("TetrisBackground.png", 279, 15, 8, 8);
             mGridDisplay[i][j]->Parent(this);
@@ -43,13 +85,27 @@ Level::~Level() {
 void Level::Update() {
     mPlayer->Active(true);
     mPlayer->Visible(true);
+    /*mHeartBeatCurrent -= mTimer->DeltaTime();
+    if (mHeartBeatCurrent <= 0) {
+        mHeartBeatUpdate = true;
+        mHeartBeatCurrent = mHeartBeat;
+    }
+
+    if (mIsDown) {
+        mInPlay = false;
+    }
+    else {
+        if (Active()) {
+            HandleMovement();
+        }
+    }*/
 
 }
 
 void Level::Render() {
     for (int i = 0; i < 18; ++i) {
         for (int j = 0; j < 10; ++j) {
-            if (mGrid[i][j]) {
+            if (mPlayGrid[i][j]) {
                 mGridDisplay[i][j]->Active(true);
                 mGridDisplay[i][j]->Render();
                
@@ -63,28 +119,28 @@ void Level::Render() {
 
 void Level::CheckForLines() {
     for (int i = 0; i < 18; ++i) {
-        if (mGrid[i][0] &&
-            mGrid[i][1] &&
-            mGrid[i][2] &&
-            mGrid[i][3] &&
-            mGrid[i][4] &&
-            mGrid[i][5] &&
-            mGrid[i][6] &&
-            mGrid[i][7] &&
-            mGrid[i][8] &&
-            mGrid[i][9]) {
+        if (mPlayGrid[i][0] &&
+            mPlayGrid[i][1] &&
+            mPlayGrid[i][2] &&
+            mPlayGrid[i][3] &&
+            mPlayGrid[i][4] &&
+            mPlayGrid[i][5] &&
+            mPlayGrid[i][6] &&
+            mPlayGrid[i][7] &&
+            mPlayGrid[i][8] &&
+            mPlayGrid[i][9]) {
             // we have a line
             //remove line
-            mGrid[i][0] = false;
-            mGrid[i][1] = false;
-            mGrid[i][2] = false;
-            mGrid[i][3] = false;
-            mGrid[i][4] = false;
-            mGrid[i][5] = false;
-            mGrid[i][6] = false;
-            mGrid[i][7] = false;
-            mGrid[i][8] = false;
-            mGrid[i][9] = false;
+            mPlayGrid[i][0] = false;
+            mPlayGrid[i][1] = false;
+            mPlayGrid[i][2] = false;
+            mPlayGrid[i][3] = false;
+            mPlayGrid[i][4] = false;
+            mPlayGrid[i][5] = false;
+            mPlayGrid[i][6] = false;
+            mPlayGrid[i][7] = false;
+            mPlayGrid[i][8] = false;
+            mPlayGrid[i][9] = false;
             AddScore(1000);
             mSideBar->SetScore(mScore);
             mSideBar->SetLines(mSideBar->GetLines() + 1);
@@ -92,20 +148,20 @@ void Level::CheckForLines() {
             //DropLines();
             do {
                 for (int j = 0; j < 10; ++j) {
-                    if (!mGrid[i][0] &&
-                        !mGrid[i][1] &&
-                        !mGrid[i][2] &&
-                        !mGrid[i][3] &&
-                        !mGrid[i][4] &&
-                        !mGrid[i][5] &&
-                        !mGrid[i][6] &&
-                        !mGrid[i][7] &&
-                        !mGrid[i][8] &&
-                        !mGrid[i][9]) {
+                    if (!mPlayGrid[i][0] &&
+                        !mPlayGrid[i][1] &&
+                        !mPlayGrid[i][2] &&
+                        !mPlayGrid[i][3] &&
+                        !mPlayGrid[i][4] &&
+                        !mPlayGrid[i][5] &&
+                        !mPlayGrid[i][6] &&
+                        !mPlayGrid[i][7] &&
+                        !mPlayGrid[i][8] &&
+                        !mPlayGrid[i][9]) {
                         do {
-                            if (mGrid[i - 1][j]) {
-                                mGrid[i][j] = true;
-                                mGrid[i - 1][j] = false;
+                            if (mPlayGrid[i - 1][j]) {
+                                mPlayGrid[i][j] = true;
+                                mPlayGrid[i - 1][j] = false;
                                 
                             }
                             if (j < 9) {
@@ -131,20 +187,20 @@ void Level::CheckForLines() {
 void Level::DropLines() {
     for (int i = 0; i < 18; ++i) {
         for (int j = 0; j < 10; ++j) {
-            if (!mGrid[i][0] &&
-                !mGrid[i][1] &&
-                !mGrid[i][2] &&
-                !mGrid[i][3] &&
-                !mGrid[i][4] &&
-                !mGrid[i][5] &&
-                !mGrid[i][6] &&
-                !mGrid[i][7] &&
-                !mGrid[i][8] &&
-                !mGrid[i][9]) {
+            if (!mPlayGrid[i][0] &&
+                !mPlayGrid[i][1] &&
+                !mPlayGrid[i][2] &&
+                !mPlayGrid[i][3] &&
+                !mPlayGrid[i][4] &&
+                !mPlayGrid[i][5] &&
+                !mPlayGrid[i][6] &&
+                !mPlayGrid[i][7] &&
+                !mPlayGrid[i][8] &&
+                !mPlayGrid[i][9]) {
                 do {
-                    if (mGrid[i - 1][j]) {
-                        mGrid[i][j] = true;
-                        mGrid[i - 1][j] = false;
+                    if (mPlayGrid[i - 1][j]) {
+                        mPlayGrid[i][j] = true;
+                        mPlayGrid[i - 1][j] = false;
                     }
                     if (j < 9) {
                         ++j;
@@ -159,7 +215,7 @@ void Level::DropLines() {
 }
 
 bool Level::CheckGridTrue(int x, int y) {
-    if (mGrid[x][y]) {
+    if (mPlayGrid[x][y]) {
        
         return true;
     }
@@ -168,10 +224,25 @@ bool Level::CheckGridTrue(int x, int y) {
     }
 }
 
-void Level::SetGridPointTrue(int x, int y) {
-    mGrid[y][x] = true;
+void Level::SetGridPointTrue(int x, int y, bool shape[4][4]) {
+    for (int row = 0; row < 4; ++row) {
+        for (int col = 0; col < 4; ++col) {
+            int playfield_row = row + y;
+            int playfield_col = col + x;
+            if (playfield_row >= 0 && playfield_row < 18 && playfield_col >= 0 && playfield_col < 10) {
+                if (shape[row][col]) {
+                    mPlayGrid[playfield_row][playfield_col] = shape[row][col];
+                }
+            }
+        }
+    }
 }
 
 void Level::AddScore(int change) {
     mScore += change;
 }
+
+//void Level::IsDown(bool isDown) {
+//    mIsDown = isDown;
+//    mInPlay = false;
+//}

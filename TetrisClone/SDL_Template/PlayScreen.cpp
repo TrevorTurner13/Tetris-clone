@@ -66,7 +66,8 @@ void PlayScreen::Update() {
         }
         mBlock->Update();
         if (mLevel->CheckGridTrue(mBlock->pixelToGridY(mBlock->Position().y), mBlock->pixelToGridX(mBlock->Position().x))) {
-            mBlock->Position(mBlock->Position().x, mBlock->Position().y - 1);
+            
+            /*mBlock->Position(mBlock->Position().x, mBlock->Position().y - 1);*/
             mBlock->IsDown(true);
         }
         if (mBlock->GetIsDown()) {
@@ -148,7 +149,7 @@ void PlayScreen::NextBlock() {
     mLevel->AddScore(100);
     mSideBar->SetScore(mLevel->Score());
     mBlock->Active(false);
-    mLevel->SetGridPointTrue(mBlock->pixelToGridX(mBlock->Position().x), mBlock->pixelToGridY(mBlock->Position().y));
+    mLevel->SetGridPointTrue(mBlock->pixelToGridX(mBlock->Position().x), mBlock->pixelToGridY(mBlock->Position().y), mBlock->mShapeGrid );
     delete mBlock;
     mBlock = new Player();
     mBlock->Parent(this);

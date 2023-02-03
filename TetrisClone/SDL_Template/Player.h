@@ -18,8 +18,11 @@ private:
     Texture* mBlock;
     PlayArea* mPlayArea;
     /*Blocks* mBlock;*/
-    float mGrid[18][10];
+
+    Texture* mShape[4][4];
     
+    float mShapeWidth;
+    float mShapeHeight;
 
     bool mVisible;
     bool mInPlay;
@@ -39,12 +42,12 @@ private:
     float mHeartBeatCurrent = mHeartBeat;
     bool mHeartBeatUpdate = false;
 
-    void HandleMovement();
-
     struct Block;
     struct Shape;
 
 public:
+    bool mShapeGrid[4][4];
+
     Player();
     ~Player();
 
@@ -52,15 +55,24 @@ public:
     void Visible(bool visible);
     void InPlay(bool inPlay);
     void NextBlock(bool nextBlock);
+    void CheckShape();
+    void HandleMovement();
+
+    void UpdateShapeDimensions();
 
     int Score();
     void AddScore(int change);
     int pixelToGridX(float x);
     int pixelToGridY(float y);
-   // bool PlayerPositionOnGrid(Vector2 position);
+   /* bool PlayerPositionOnGrid(Vector2 position);*/
 
     void IsDown(bool isDown);
     bool GetIsDown() { return mIsDown; }
+
+    int min(int a, int b);
+    int max(int a, int b);
+
+    void rotate_shape();
 
     void Update() override;
     void Render() override;

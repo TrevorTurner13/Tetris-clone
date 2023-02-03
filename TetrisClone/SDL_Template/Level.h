@@ -11,7 +11,7 @@ public:
 private:
     //const int ROWS = 18;
     //const int COLUMNS = 10;
-
+    InputManager* mInput;
     Timer* mTimer;
     GameEntity* mPlayArea;
     PlaySideBar* mSideBar;
@@ -19,7 +19,7 @@ private:
 
     Texture* mBlock;
 
-    bool mGrid[18][10];
+    bool mPlayGrid[18][10];
     Texture* mGridDisplay[18][10];
 
     int mStage;
@@ -33,6 +33,18 @@ private:
 
     Vector2 gridPosition;
 
+    //float mMoveSpeed;
+    //Vector2 mDropSpeed;
+    //Vector2 mMove;
+
+    //Vector2 mMoveBoundsX;
+    //Vector2 mMoveBoundsY;
+
+    //float mHeartBeat = 1.0;
+    //float mHeartBeatCurrent = mHeartBeat;
+    //bool mHeartBeatUpdate = false;
+    //bool mInPlay;
+    //bool mIsDown;
 public:
     Level(int stage, PlaySideBar* sideBar, Player* player);
     ~Level();
@@ -43,7 +55,10 @@ public:
     void CheckForLines();
     void DropLines();
     bool CheckGridTrue(int x, int y);
-    void SetGridPointTrue(int x, int y);
+    void SetGridPointTrue(int x, int y, bool shape[4][4]);
+    /*void HandleMovement();
+    void IsDown(bool isDown);
+    bool GetIsDown() { return mIsDown; }*/
 
     void Update() override;
     void Render() override;
