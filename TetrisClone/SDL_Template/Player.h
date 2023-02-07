@@ -93,25 +93,8 @@ public:
     void Visible(bool visible);
     void InPlay(bool inPlay);
 
-   /* struct Block {
-        Texture* mBlock;
-        bool active;
-    };
-
-    struct Shape {
-        Texture* mBlock[4][4];
-        bool matrix[4][4];
-        double x, y;
-        int size;
-    };
-    
-    Shape currentShape{};
-    Shape blocks{};*/
-
-   /* Texture* reverseCols(Texture* s);
-    Texture* transpose(Texture* s);
-    void Rotate();*/
-
+    void SetHeartbeat(int levels);
+    float GetHeartBeat() { return mHeartBeat; }
     
     void HandleMovement();
 

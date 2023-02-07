@@ -81,51 +81,52 @@ void Level::CheckForLines() {
             mPlayGrid[i][1] = false;
             mPlayGrid[i][2] = false;
             mPlayGrid[i][3] = false;
-mPlayGrid[i][4] = false;
-mPlayGrid[i][5] = false;
-mPlayGrid[i][6] = false;
-mPlayGrid[i][7] = false;
-mPlayGrid[i][8] = false;
-mPlayGrid[i][9] = false;
-AddScore(1000);
-mSideBar->SetScore(mScore);
-mSideBar->SetLines(mSideBar->GetLines() + 1);
-mSideBar->SetLevel(mSideBar->GetLines());
-//DropLines();
-do {
-    for (int j = 0; j < 10; ++j) {
-        if (!mPlayGrid[i][0] &&
-            !mPlayGrid[i][1] &&
-            !mPlayGrid[i][2] &&
-            !mPlayGrid[i][3] &&
-            !mPlayGrid[i][4] &&
-            !mPlayGrid[i][5] &&
-            !mPlayGrid[i][6] &&
-            !mPlayGrid[i][7] &&
-            !mPlayGrid[i][8] &&
-            !mPlayGrid[i][9]) {
+            mPlayGrid[i][4] = false;
+            mPlayGrid[i][5] = false;
+            mPlayGrid[i][6] = false;
+            mPlayGrid[i][7] = false;
+            mPlayGrid[i][8] = false;
+            mPlayGrid[i][9] = false;
+            AddScore(1000);
+            mSideBar->SetScore(mScore);
+            mSideBar->SetLines(mSideBar->GetLines() + 1);
+            mSideBar->SetLevel(mSideBar->GetLines());
+            mPlayer->SetHeartbeat(mSideBar->GetLevels());
+            //DropLines();
             do {
-                if (mPlayGrid[i - 1][j]) {
-                    mPlayGrid[i][j] = true;
-                    mPlayGrid[i - 1][j] = false;
+                for (int j = 0; j < 10; ++j) {
+                    if (!mPlayGrid[i][0] &&
+                        !mPlayGrid[i][1] &&
+                        !mPlayGrid[i][2] &&
+                        !mPlayGrid[i][3] &&
+                        !mPlayGrid[i][4] &&
+                        !mPlayGrid[i][5] &&
+                        !mPlayGrid[i][6] &&
+                        !mPlayGrid[i][7] &&
+                        !mPlayGrid[i][8] &&
+                        !mPlayGrid[i][9]) {
+                        do {
+                            if (mPlayGrid[i - 1][j]) {
+                                mPlayGrid[i][j] = true;
+                                mPlayGrid[i - 1][j] = false;
 
+                            }
+                            if (j < 9) {
+                                ++j;
+                            }
+                            else {
+                                break;
+                            }
+                        } while (j < 10);
+                    }
                 }
-                if (j < 9) {
-                    ++j;
+                if (i > 0) {
+                    --i;
                 }
                 else {
                     break;
                 }
-            } while (j < 10);
-        }
-    }
-    if (i > 0) {
-        --i;
-    }
-    else {
-        break;
-    }
-} while (i > 0);
+            } while (i > 0);
         }
     }
 }

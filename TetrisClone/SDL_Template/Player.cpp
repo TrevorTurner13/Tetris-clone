@@ -252,6 +252,15 @@ void Player::Render() {
 
 }
 
+void Player::SetHeartbeat(int levels) {
+    static const int requiredLevels[] = {
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+    };
+    while (levels = requiredLevels[levels]) {
+        mHeartBeat = GetHeartBeat() - .5;
+    }
+}
+
 int Player::pixelToGridX(float x) {
     int gridX = (x - 117) / 48;
 

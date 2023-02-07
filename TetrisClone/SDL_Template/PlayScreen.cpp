@@ -57,8 +57,6 @@ void PlayScreen::Update() {
         if (!mLevelStarted) {
             StartNextLevel();
         }
-        
-
         if (mCurrentStage > 0) {
             mSideBar->Update();
         }
@@ -73,6 +71,7 @@ void PlayScreen::Update() {
             if (mBlock->GetIsDown()) {
                 NextBlock();
                 mLevel->CheckForLines();
+                mSideBar->GetLines();
                
                 mBlock->Update();
                 mBlock1->Update();
@@ -87,6 +86,7 @@ void PlayScreen::Update() {
             if (mBlock1->GetIsDown()) {
                 NextBlock();
                 mLevel->CheckForLines();
+                mSideBar->GetLines();
                 
                 mBlock->Update();
                 mBlock1->Update();

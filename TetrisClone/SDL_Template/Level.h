@@ -36,7 +36,7 @@ private:
 public:
     Level(int stage, PlaySideBar* sideBar, Player* player);
     ~Level();
-
+    
     int Score() { return mScore; }
     void AddScore(int change);
     void StartStage();

@@ -28,6 +28,7 @@ public:
     void SetLevel(int levels);
     void SetLines(int lines);
     int GetLines() { return mLines; }
+    int GetLevels() { return mLevels; }
 
     void Update() override;
     void Render() override;

@@ -36,11 +36,10 @@ PlaySideBar::~PlaySideBar() {
     mLevelsLabel = nullptr;
     delete mLinesLabel;
     mLinesLabel = nullptr;
-
-   
 }
 
 void PlaySideBar::Update() {
+    GetLines();
 }
 
 void PlaySideBar::Render() {
@@ -65,6 +64,7 @@ void PlaySideBar::SetLevel(int lines) {
 }
 
 void PlaySideBar::SetLines(int lines) {
+    mLines = lines;
     mLinesLabel->Score(lines);
 
 }
