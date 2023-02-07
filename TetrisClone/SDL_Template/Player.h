@@ -19,8 +19,50 @@ private:
     PlayArea* mPlayArea;
     /*Blocks* mBlock;*/
 
-    Texture* mShape[4][4];
-    
+    Texture* mShapeTexture[4][4];
+    bool mLShape[4][4] = { {0,0,1,0} // L BLOCK
+                       ,{1,1,1,0}
+                       ,{0,0,0,0}
+                       ,{0,0,0,0}
+    };
+    bool mZShape[4][4] = { {1,1,0,0} // Z BLOCK
+                        ,{0,1,1,0}
+                        ,{0,0,0,0}
+                        ,{0,0,0,0}
+    };
+    bool mIShape[4][4] = { {1,1,1,1,} // I BLOCK
+                        ,{0,0,0,0}
+                        ,{0,0,0,0}
+                        ,{0,0,0,0}
+    };
+    // J BLOCK
+    bool mJShape[4][4] = { {1,0,0,0}
+                        ,{1,1,1,0}
+                        ,{0,0,0,0}
+                        ,{0,0,0,0}
+    };
+    // O BLOCK
+    bool mOShape[4][4] = { {1,1,0,0}
+                        ,{1,1,0,0}
+                        ,{0,0,0,0}
+                        ,{0,0,0,0}
+    };
+    // S BLOCK
+    bool mSShape[4][4] = { {0,1,1,0}
+                        ,{1,1,0,0}
+                        ,{0,0,0,0}
+                        ,{0,0,0,0}
+    };
+    // T BLOCK
+    bool mTShape[4][4] = { {0,1,0,0}
+                        ,{1,1,1,0}
+                        ,{0,0,0,0}
+                        ,{0,0,0,0}
+    };
+    bool temp[4][4];
+
+    const int NUM_ARRAYS[7] = { 0, 1, 2, 3, 4, 5, 6 };
+   
     float mShapeWidth;
     float mShapeHeight;
 
@@ -41,27 +83,40 @@ private:
     float mHeartBeat = 1.0;
     float mHeartBeatCurrent = mHeartBeat;
     bool mHeartBeatUpdate = false;
-
-    struct Block;
-    struct Shape;
-
+    
 public:
     bool mShapeGrid[4][4];
-
+    
     Player();
     ~Player();
 
-    float GetPlayerGrid();
     void Visible(bool visible);
     void InPlay(bool inPlay);
-    void NextBlock(bool nextBlock);
-    void CheckShape();
+
+   /* struct Block {
+        Texture* mBlock;
+        bool active;
+    };
+
+    struct Shape {
+        Texture* mBlock[4][4];
+        bool matrix[4][4];
+        double x, y;
+        int size;
+    };
+    
+    Shape currentShape{};
+    Shape blocks{};*/
+
+   /* Texture* reverseCols(Texture* s);
+    Texture* transpose(Texture* s);
+    void Rotate();*/
+
+    
     void HandleMovement();
 
     void UpdateShapeDimensions();
 
-    int Score();
-    void AddScore(int change);
     int pixelToGridX(float x);
     int pixelToGridY(float y);
    /* bool PlayerPositionOnGrid(Vector2 position);*/
