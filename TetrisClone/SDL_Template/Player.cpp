@@ -18,7 +18,7 @@ void Player::HandleMovement() {
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_UP)) {
        
-       rotate_shape();
+        Rotate();
         UpdateShapeDimensions();
     }
     
@@ -60,102 +60,62 @@ Player::Player() {
          }
      }
 
-     bool mLShape[4][4] = { {0,0,1,0} // L BLOCK
-                        ,{1,1,1,0}
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
-     };
-     bool mZShape[4][4] = { {1,1,0,0} // Z BLOCK
-                         ,{0,1,1,0}
-                         ,{0,0,0,0}
-                         ,{0,0,0,0}
-     };
-     bool mIShape[4][4] = { {1,1,1,1,} // I BLOCK
-                         ,{0,0,0,0}
-                         ,{0,0,0,0}
-                         ,{0,0,0,0}
-     };
-     // J BLOCK
-     bool mJShape[4][4] = { {1,0,0,0}
-                         ,{1,1,1,0}
-                         ,{0,0,0,0}
-                         ,{0,0,0,0}
-     };
-     // O BLOCK
-     bool mOShape[4][4] = { {1,1,0,0}
-                         ,{1,1,0,0}
-                         ,{0,0,0,0}
-                         ,{0,0,0,0}
-     };
-     // S BLOCK
-     bool mSShape[4][4] = { {0,1,1,0}
-                         ,{1,1,0,0}
-                         ,{0,0,0,0}
-                         ,{0,0,0,0}
-     };
-     // T BLOCK
-     bool mTShape[4][4] = { {0,1,0,0}
-                         ,{1,1,1,0}
-                         ,{0,0,0,0}
-                         ,{0,0,0,0}
-     };
-
-     /*bool mTempShape[4][4] = {{0,0,1,0} 
-                             ,{1,1,1,0}
-                             ,{0,0,0,0}
-                             ,{0,0,0,0}
-                             };
-   */
-
      for (int i = 0; i < 4; ++i) {
          for (int j = 0; j < 4; ++j) {
              srand(time(NULL));
              int randomIndex = rand() % NUM_ARRAYS[6];
              switch (randomIndex) {
              case 0:
-                 mShapeGrid[i][j] = mLShape[i][j];
+                 currentShape = mLShape;
+                 mShapeGrid[i][j] = mLShape.mGrid[i][j];
                  mShapeTexture[i][j] = new Texture("TetrisBackground.png", 179, 40, 8, 8);
                  mShapeTexture[i][j]->Parent(this);
                  mShapeTexture[i][j]->Position(j * 48, i * 48);
                  mShapeTexture[i][j]->Scale(Vector2(6.0f, 6.0f));
                  break;
              case 1:
-                 mShapeGrid[i][j] = mZShape[i][j];
+                 currentShape = mZShape;
+                 mShapeGrid[i][j] = mZShape.mGrid[i][j];
                  mShapeTexture[i][j] = new Texture("TetrisBackground.png", 204, 16, 8, 8);
                  mShapeTexture[i][j]->Parent(this);
                  mShapeTexture[i][j]->Position(j * 48, i * 48);
                  mShapeTexture[i][j]->Scale(Vector2(6.0f, 6.0f));
                  break;
              case 2:
-                 mShapeGrid[i][j] = mIShape[i][j];
+                 currentShape = mIShape;
+                 mShapeGrid[i][j] = mIShape.mGrid[i][j];
                  mShapeTexture[i][j] = new Texture("TetrisBackground.png", 244, 46, 8, 8);
                  mShapeTexture[i][j]->Parent(this);
                  mShapeTexture[i][j]->Position(j * 48, i * 48);
                  mShapeTexture[i][j]->Scale(Vector2(6.0f, 6.0f));
                  break;
              case 3:
-                 mShapeGrid[i][j] = mJShape[i][j];
+                 currentShape = mJShape;
+                 mShapeGrid[i][j] = mJShape.mGrid[i][j];
                  mShapeTexture[i][j] = new Texture("TetrisBackground.png", 238, 15, 8, 8);
                  mShapeTexture[i][j]->Parent(this);
                  mShapeTexture[i][j]->Position(j * 48, i * 48);
                  mShapeTexture[i][j]->Scale(Vector2(6.0f, 6.0f));
                  break;
              case 4:
-                 mShapeGrid[i][j] = mOShape[i][j];
+                 currentShape = mOShape;
+                 mShapeGrid[i][j] = mOShape.mGrid[i][j];
                  mShapeTexture[i][j] = new Texture("TetrisBackground.png", 179, 16, 8, 8);
                  mShapeTexture[i][j]->Parent(this);
                  mShapeTexture[i][j]->Position(j * 48, i * 48);
                  mShapeTexture[i][j]->Scale(Vector2(6.0f, 6.0f));
                  break;
              case 5:
-                 mShapeGrid[i][j] = mSShape[i][j];
+                 currentShape = mSShape;
+                 mShapeGrid[i][j] = mSShape.mGrid[i][j];
                  mShapeTexture[i][j] = new Texture("TetrisBackground.png", 279, 15, 8, 8);
                  mShapeTexture[i][j]->Parent(this);
                  mShapeTexture[i][j]->Position(j * 48, i * 48);
                  mShapeTexture[i][j]->Scale(Vector2(6.0f, 6.0f));
                  break;
              case 6:
-                 mShapeGrid[i][j] = mTShape[i][j];
+                 currentShape = mTShape;
+                 mShapeGrid[i][j] = mTShape.mGrid[i][j];
                  mShapeTexture[i][j] = new Texture("TetrisBackground.png", 213, 40, 8, 8);
                  mShapeTexture[i][j]->Parent(this);
                  mShapeTexture[i][j]->Position(j * 48, i * 48);
@@ -249,7 +209,6 @@ void Player::Render() {
             }
         }
     }
-
 }
 
 void Player::SetHeartbeat(int levels) {
@@ -320,21 +279,21 @@ int Player::max(int a, int b) {
 //    return mShapeGrid;
 //}
 
-void Player::rotate_shape() {
-    // check if shape is square or line
-    // if not
-    bool temp[4][4];
-    for (int row = 0; row < 3; ++row) {
-        for (int col = 0; col < 3; ++col) {
-            temp[col][2 - row] = mShapeGrid[row][col];
-        }
-    }
-    for (int row = 0; row < 3; ++row) {
-        for (int col = 0; col < 3; ++col) {
-            mShapeGrid[row][col] = temp[row][col];
-        }
-    }
-}
+//void Player::rotate_shape() {
+//    // check if shape is square or line
+//    // if not
+//    bool temp[4][4];
+//    for (int row = 0; row < 3; ++row) {
+//        for (int col = 0; col < 3; ++col) {
+//            temp[col][2 - row] = mShapeGrid[row][col];
+//        }
+//    }
+//    for (int row = 0; row < 3; ++row) {
+//        for (int col = 0; col < 3; ++col) {
+//            mShapeGrid[row][col] = temp[row][col];
+//        }
+//    }
+//}
 
 //void Player::rotate_shape() {
 //    bool temp[4][4];
@@ -354,28 +313,29 @@ void Player::rotate_shape() {
 //    }
 //}
 
-//Player::Shape Player::reverseCols(Shape s) {
-//    	Shape tmp = s;
-//    	for (int i = 0; i < s.size; i++) {
-//    		for (int j = 0; j < s.size / 2; j++) {
-//    			bool t = s.matrix[i][j];
-//    			tmp.matrix[i][j] = s.matrix[i][s.size - j - 1];
-//    			tmp.matrix[i][s.size - j - 1] = t;
-//    		}
-//    	}
-//    	return tmp;
-//    }
-//    
-//Player::Shape Player::transpose(Shape s) {
-//    	Shape tmp = s;
-//    	for (int i = 0; i < s.size; i++) {
-//    		for (int j = 0; j < s.size; j++) {
-//    			tmp.matrix[i][j] = s.matrix[j][i];
-//    		}
-//    	}
-//    	return tmp;
-//    }
-//    
-//void Player::Rotate() {
-//    	currentShape = reverseCols(transpose(currentShape));
-//    }
+Player::Shape Player::reverseCols(Shape s) {
+    Shape tmp = s;
+    for (int i = 0; i < s.size; i++) {
+    	for (int j = 0; j < s.size / 2; j++) {
+    		bool t = s.mGrid[i][j];
+    		tmp.mGrid[i][j] = s.mGrid[i][s.size - j - 1];
+    		tmp.mGrid[i][s.size - j - 1] = t;
+    	}
+    }
+    return tmp;
+}
+    
+Player::Shape Player::transpose(Shape s) {
+    Player::Shape tmp;
+    for (int i = 0; i < s.size; i++) {
+    	for (int j = 0; j < s.size; j++) {
+    		tmp.mGrid[i][j] = s.mGrid[j][i];
+    	}
+    }
+    tmp.size = 3;
+    return tmp;
+}
+    
+void Player::Rotate() {
+    currentShape = reverseCols(transpose(currentShape));
+}

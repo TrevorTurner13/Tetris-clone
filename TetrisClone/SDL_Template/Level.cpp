@@ -91,7 +91,7 @@ void Level::CheckForLines() {
             mSideBar->SetScore(mScore);
             mSideBar->SetLines(mSideBar->GetLines() + 1);
             mSideBar->SetLevel(mSideBar->GetLines());
-            mPlayer->SetHeartbeat(mSideBar->GetLevels());
+            //mPlayer->SetHeartbeat(mSideBar->GetLevels());
             //DropLines();
             do {
                 for (int j = 0; j < 10; ++j) {
