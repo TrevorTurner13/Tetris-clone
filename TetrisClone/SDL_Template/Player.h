@@ -25,13 +25,6 @@ private:
     Texture* mBlock;
     PlayArea* mPlayArea;
 
-    struct Shape {
-        bool mGrid[4][4];
-        int size;
-    };
-
-    Shape currentShape;
-
     Texture* mShapeTexture[4][4];
     Shape mLShape = {
         { 
@@ -109,6 +102,8 @@ private:
     bool mInPlay;
     bool mIsDown;
     bool mNextBlock;
+    bool mCurrentShapeIsIShape;
+    
 
     int mScore;
 
@@ -125,7 +120,7 @@ private:
     
 public:
 
-    
+    bool mPlayGridCopy[18][10];
     Player();
     ~Player();
 
@@ -146,17 +141,16 @@ public:
 
     int pixelToGridX(float x);
     int pixelToGridY(float y);
-   /* bool PlayerPositionOnGrid(Vector2 position);*/
 
     void IsDown(bool isDown);
     bool GetIsDown() { return mIsDown; }
+    
 
     int min(int a, int b);
     int max(int a, int b);
 
-    //void rotate_shape();
-
-    void CheckCollision();
+    bool CheckCollision();
+    bool CheckCopyGridTrue(int x, int y);
 
     void Update() override;
     void Render() override;

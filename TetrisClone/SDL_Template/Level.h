@@ -9,8 +9,6 @@ public:
     enum LevelStates { Running, Finished, GameOver };
 
 private:
-    //const int ROWS = 18;
-    //const int COLUMNS = 10;
     InputManager* mInput;
     Timer* mTimer;
     GameEntity* mPlayArea;
@@ -43,7 +41,6 @@ public:
     void CheckForLines();
     void DropLines();
     bool CheckGridTrue(int x, int y);
-    //bool CompareGrids();
     void SetGridPointTrue(int x, int y, bool shape[4][4]);
 
     void Update() override;

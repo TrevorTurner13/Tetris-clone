@@ -1,10 +1,11 @@
 #include "Player.h"
 
 void Player::HandleMovement() {
+    
     if (mHeartBeatUpdate) {
         mHeartBeatUpdate = false;
         Position(Position() + Vector2(0.0, 48.0));
-
+        
     }
 
     if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
@@ -55,6 +56,7 @@ Player::Player() {
     mInPlay = true;
     mIsDown = false;
     mNextBlock = false;
+    mCurrentShapeIsIShape = false;
 
     mShapeWidth = 0;
     mShapeHeight = 0; 
@@ -65,7 +67,6 @@ Player::Player() {
         currentShape = mLShape;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                //mShapeGrid[i][j] = mLShape.mGrid[i][j];
                 mShapeTexture[i][j] = new Texture("TetrisBackground.png", 179, 40, 8, 8);
                 mShapeTexture[i][j]->Parent(this);
                 mShapeTexture[i][j]->Position(j * 48, i * 48);
@@ -77,7 +78,6 @@ Player::Player() {
         currentShape = mZShape;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                //mShapeGrid[i][j] = mZShape.mGrid[i][j];
                 mShapeTexture[i][j] = new Texture("TetrisBackground.png", 204, 16, 8, 8);
                 mShapeTexture[i][j]->Parent(this);
                 mShapeTexture[i][j]->Position(j * 48, i * 48);
@@ -89,11 +89,11 @@ Player::Player() {
         currentShape = mIShape;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                //mShapeGrid[i][j] = mIShape.mGrid[i][j];
                 mShapeTexture[i][j] = new Texture("TetrisBackground.png", 244, 46, 8, 8);
                 mShapeTexture[i][j]->Parent(this);
                 mShapeTexture[i][j]->Position(j * 48, i * 48);
                 mShapeTexture[i][j]->Scale(Vector2(6.0f, 6.0f));
+                mCurrentShapeIsIShape = true;
             }
         }
         break;
@@ -101,7 +101,6 @@ Player::Player() {
         currentShape = mJShape;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                //mShapeGrid[i][j] = mJShape.mGrid[i][j];
                 mShapeTexture[i][j] = new Texture("TetrisBackground.png", 238, 15, 8, 8);
                 mShapeTexture[i][j]->Parent(this);
                 mShapeTexture[i][j]->Position(j * 48, i * 48);
@@ -113,7 +112,6 @@ Player::Player() {
         currentShape = mOShape;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                //mShapeGrid[i][j] = mOShape.mGrid[i][j];
                 mShapeTexture[i][j] = new Texture("TetrisBackground.png", 179, 16, 8, 8);
                 mShapeTexture[i][j]->Parent(this);
                 mShapeTexture[i][j]->Position(j * 48, i * 48);
@@ -125,7 +123,6 @@ Player::Player() {
         currentShape = mSShape;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                //mShapeGrid[i][j] = mSShape.mGrid[i][j];
                 mShapeTexture[i][j] = new Texture("TetrisBackground.png", 279, 15, 8, 8);
                 mShapeTexture[i][j]->Parent(this);
                 mShapeTexture[i][j]->Position(j * 48, i * 48);
@@ -137,7 +134,6 @@ Player::Player() {
         currentShape = mTShape;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                //mShapeGrid[i][j] = mTShape.mGrid[i][j];
                 mShapeTexture[i][j] = new Texture("TetrisBackground.png", 213, 40, 8, 8);
                 mShapeTexture[i][j]->Parent(this);
                 mShapeTexture[i][j]->Position(j * 48, i * 48);
@@ -226,6 +222,8 @@ void Player::SetHeartbeat(int levels) {
         mHeartBeat = GetHeartBeat() - .5;
     }
 }
+
+
 
 int Player::pixelToGridX(float x) {
     int gridX = (x - 117) / 48;
@@ -328,9 +326,40 @@ Player::Shape Player::translate(Shape s) {
 }
     
 void Player::Rotate() {
-    currentShape = translate(reverseCols(transpose(currentShape)));
+    if (mCurrentShapeIsIShape) {
+        currentShape = transpose(currentShape);
+    }
+    else {
+        currentShape = translate(reverseCols(transpose(currentShape)));
+    }
 }
 
-void Player::CheckCollision() {
+bool Player::CheckCollision() {
+    bool gridClear = true;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (currentShape.mGrid[i][j]) {
+                if (CheckCopyGridTrue(pixelToGridY(Position().y + 1), pixelToGridX(Position().x))
+                    || CheckCopyGridTrue(pixelToGridY(Position().y), pixelToGridX(Position().x + 1))
+                    || CheckCopyGridTrue(pixelToGridY(Position().y), pixelToGridX(Position().x - 1))) {
+                    gridClear = false;
+                }
+            }
+        }
+    }
+    return gridClear;
+}
 
+bool Player::CheckCopyGridTrue(int x, int y) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            if (mPlayGridCopy[x][y]) {
+
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
 }

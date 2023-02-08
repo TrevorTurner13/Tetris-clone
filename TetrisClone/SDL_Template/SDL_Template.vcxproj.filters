@@ -111,9 +111,6 @@
     <ClCompile Include="ScreenManager.cpp">
       <Filter>Source Files\Tetris</Filter>
     </ClCompile>
-    <ClCompile Include="Blocks.cpp">
-      <Filter>Source Files\Tetris</Filter>
-    </ClCompile>
     <ClCompile Include="Legal.cpp">
       <Filter>Source Files\Tetris</Filter>
     </ClCompile>
@@ -198,9 +195,6 @@
       <Filter>Header Files\Tetris</Filter>
     </ClInclude>
     <ClInclude Include="PlaySideBar.h">
-      <Filter>Header Files\Tetris</Filter>
-    </ClInclude>
-    <ClInclude Include="Blocks.h">
       <Filter>Header Files\Tetris</Filter>
     </ClInclude>
     <ClInclude Include="NintendoScreen.h">
