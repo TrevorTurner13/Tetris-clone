@@ -25,6 +25,13 @@ private:
     Texture* mBlock;
     PlayArea* mPlayArea;
 
+    struct Shape {
+        bool mGrid[4][4];
+        int size;
+    };
+
+    Shape currentShape;
+
     Texture* mShapeTexture[4][4];
     Shape mLShape = {
         { 
