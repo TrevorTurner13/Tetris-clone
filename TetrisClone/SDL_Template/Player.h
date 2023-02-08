@@ -4,62 +4,94 @@
 #include "InputManager.h"
 #include "AudioManager.h"
 #include "PlayArea.h"
-//#include "Blocks.h"
 
 using namespace SDLFramework;
 
 class Player : public GameEntity {
+public:
+    struct Shape {
+        bool mGrid[4][4];
+        int size;
+    };
+
+    Shape currentShape;
+    Shape tempShape;
+
 private:
-  
     Timer* mTimer;
     InputManager* mInput;
     AudioManager* mAudio;
 
     Texture* mBlock;
     PlayArea* mPlayArea;
-    /*Blocks* mBlock;*/
 
     Texture* mShapeTexture[4][4];
-    bool mLShape[4][4] = { {0,0,1,0} // L BLOCK
-                       ,{1,1,1,0}
-                       ,{0,0,0,0}
-                       ,{0,0,0,0}
+    Shape mLShape = {
+        { 
+            {0,0,1,0}, // L BLOCK
+            {1,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0} 
+        }, 3 
     };
-    bool mZShape[4][4] = { {1,1,0,0} // Z BLOCK
-                        ,{0,1,1,0}
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
+
+    Shape mZShape = {
+        {
+            {1,1,0,0}, // Z BLOCK
+            {0,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0} 
+        }, 3 
     };
-    bool mIShape[4][4] = { {1,1,1,1,} // I BLOCK
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
+    
+    Shape mIShape = { 
+        {
+            {1,1,1,1,}, // I BLOCK
+            {0,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 4
     };
+
     // J BLOCK
-    bool mJShape[4][4] = { {1,0,0,0}
-                        ,{1,1,1,0}
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
+    Shape mJShape = { 
+        {
+            {1,0,0,0},
+            {1,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
     };
+
     // O BLOCK
-    bool mOShape[4][4] = { {1,1,0,0}
-                        ,{1,1,0,0}
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
+    Shape mOShape = { 
+        {
+            {1,1,0,0},
+            {1,1,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 2
     };
+
     // S BLOCK
-    bool mSShape[4][4] = { {0,1,1,0}
-                        ,{1,1,0,0}
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
+    Shape mSShape = { 
+        {
+            {0,1,1,0},
+            {1,1,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
     };
+
     // T BLOCK
-    bool mTShape[4][4] = { {0,1,0,0}
-                        ,{1,1,1,0}
-                        ,{0,0,0,0}
-                        ,{0,0,0,0}
+    Shape mTShape = { 
+        {
+            {0,1,0,0},
+            {1,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
     };
-    bool temp[4][4];
 
     const int NUM_ARRAYS[7] = { 0, 1, 2, 3, 4, 5, 6 };
    
@@ -85,7 +117,7 @@ private:
     bool mHeartBeatUpdate = false;
     
 public:
-    bool mShapeGrid[4][4];
+
     
     Player();
     ~Player();
@@ -100,6 +132,11 @@ public:
 
     void UpdateShapeDimensions();
 
+    Shape reverseCols(Shape s);
+    Shape transpose(Shape s);
+    Shape translate(Shape s);
+    void Rotate();
+
     int pixelToGridX(float x);
     int pixelToGridY(float y);
    /* bool PlayerPositionOnGrid(Vector2 position);*/
@@ -110,7 +147,9 @@ public:
     int min(int a, int b);
     int max(int a, int b);
 
-    void rotate_shape();
+    //void rotate_shape();
+
+    void CheckCollision();
 
     void Update() override;
     void Render() override;

@@ -4,6 +4,7 @@ using SDLFramework::GameManager;
 
 int main(int argc, char * args[])
 {
+	srand(time(NULL));
 	GameManager * game = GameManager::Instance();
 
 	game->Run();
