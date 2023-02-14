@@ -5,6 +5,15 @@ void Player::HandleMovement() {
     if (mHeartBeatUpdate) {
         mHeartBeatUpdate = false;
         Position(Position() + Vector2(0.0, 48.0));
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                if (currentShape.mGrid[i][j]) {
+                    if (CheckCopyGridTrue(pixelToGridY(Position().y + 1), pixelToGridX(Position().x))) {
+                        IsDown(true);
+                    }
+                }
+            }
+        }
         
     }
 
@@ -53,7 +62,6 @@ Player::Player() {
     mAudio = AudioManager::Instance();
 
     mVisible = true;
-    mInPlay = true;
     mIsDown = false;
     mNextBlock = false;
     mCurrentShapeIsIShape = false;
@@ -168,14 +176,9 @@ void Player::Visible(bool visible) {
     mVisible = visible;
 }
 
-void Player::InPlay(bool inPlay) {
-    mInPlay = inPlay;
-
-}
 
 void Player::IsDown(bool isDown) {
     mIsDown = isDown;
-    mInPlay = false;  
 }
 
 void Player::Update() {
@@ -219,7 +222,7 @@ void Player::SetHeartbeat(int levels) {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
     };
     while (levels = requiredLevels[levels]) {
-        mHeartBeat = GetHeartBeat() - .5;
+        mHeartBeat = GetHeartBeat()/2;
     }
 }
 
@@ -334,32 +337,33 @@ void Player::Rotate() {
     }
 }
 
-bool Player::CheckCollision() {
+bool Player::CheckCollision(int x, int y) {
     bool gridClear = true;
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (currentShape.mGrid[i][j]) {
-                if (CheckCopyGridTrue(pixelToGridY(Position().y + 1), pixelToGridX(Position().x))
-                    || CheckCopyGridTrue(pixelToGridY(Position().y), pixelToGridX(Position().x + 1))
-                    || CheckCopyGridTrue(pixelToGridY(Position().y), pixelToGridX(Position().x - 1))) {
+    for (int i = 0; i < 18; ++i){
+        for (int j = 0; j < 10; ++j){
+            if (CheckCopyGridTrue(i + 1, j)){
                     gridClear = false;
                 }
             }
         }
-    }
     return gridClear;
 }
 
 bool Player::CheckCopyGridTrue(int x, int y) {
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            if (mPlayGridCopy[x][y]) {
+    if (mPlayGridCopy[x][y]) {
 
-                return true;
-            }
-            else {
-                return false;
-            }
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void Player::SetCopyGrid(bool playGrid[18][10]) {
+    for (int i = 0; i < 18; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            mPlayGridCopy[i][j] = playGrid[i][j];
         }
     }
+    
 }

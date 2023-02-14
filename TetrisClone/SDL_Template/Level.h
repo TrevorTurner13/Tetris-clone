@@ -39,7 +39,6 @@ public:
     void AddScore(int change);
     void StartStage();
     void CheckForLines();
-    void DropLines();
     bool CheckGridTrue(int x, int y);
     void SetGridPointTrue(int x, int y, bool shape[4][4]);
 

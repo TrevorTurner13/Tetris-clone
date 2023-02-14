@@ -99,13 +99,10 @@ private:
     float mShapeHeight;
 
     bool mVisible;
-    bool mInPlay;
     bool mIsDown;
     bool mNextBlock;
     bool mCurrentShapeIsIShape;
     
-
-    int mScore;
 
     float mMoveSpeed;
     Vector2 mDropSpeed;
@@ -118,17 +115,17 @@ private:
     float mHeartBeatCurrent = mHeartBeat;
     bool mHeartBeatUpdate = false;
     
-public:
-
     bool mPlayGridCopy[18][10];
+
+    
+public:
     Player();
     ~Player();
 
     void Visible(bool visible);
-    void InPlay(bool inPlay);
-
     void SetHeartbeat(int levels);
     float GetHeartBeat() { return mHeartBeat; }
+    void SetCopyGrid(bool playGrid[18][10]);
     
     void HandleMovement();
 
@@ -144,12 +141,11 @@ public:
 
     void IsDown(bool isDown);
     bool GetIsDown() { return mIsDown; }
-    
 
     int min(int a, int b);
     int max(int a, int b);
 
-    bool CheckCollision();
+    bool CheckCollision(int x, int y);
     bool CheckCopyGridTrue(int x, int y);
 
     void Update() override;

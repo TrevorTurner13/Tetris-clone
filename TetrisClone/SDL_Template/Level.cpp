@@ -25,7 +25,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
     for (int i = 0; i < 18; ++i) {
         for (int j = 0; j < 10; ++j) {
             mPlayGrid[i][j] = false;
-            mPlayer->mPlayGridCopy[i][j] = mPlayGrid[i][j];
+            mPlayer->SetCopyGrid(mPlayGrid);
             mGridDisplay[i][j] = new Texture("TetrisBackground.png", 279, 15, 8, 8);
             mGridDisplay[i][j]->Parent(this);
             mGridDisplay[i][j]->Position(117 + (j * 48), 24 + (i * 48));
@@ -129,37 +129,9 @@ void Level::CheckForLines() {
             } while (i > 0);
         }
     }
+    mPlayer->SetCopyGrid(mPlayGrid);
 }
 
-void Level::DropLines() {
-    for (int i = 0; i < 18; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            if (!mPlayGrid[i][0] &&
-                !mPlayGrid[i][1] &&
-                !mPlayGrid[i][2] &&
-                !mPlayGrid[i][3] &&
-                !mPlayGrid[i][4] &&
-                !mPlayGrid[i][5] &&
-                !mPlayGrid[i][6] &&
-                !mPlayGrid[i][7] &&
-                !mPlayGrid[i][8] &&
-                !mPlayGrid[i][9]) {
-                do {
-                    if (mPlayGrid[i - 1][j]) {
-                        mPlayGrid[i][j] = true;
-                        mPlayGrid[i - 1][j] = false;
-                    }
-                    if (j < 9) {
-                        ++j;
-                    }
-                    else {
-                        break;
-                    }
-                } while (j < 10);
-            }
-        }
-    }
-}
 
 bool Level::CheckGridTrue(int x, int y) {
     if (mPlayGrid[x][y]) {
@@ -181,11 +153,13 @@ void Level::SetGridPointTrue(int x, int y, bool shape[4][4]) {
             if (playfield_row >= 0 && playfield_row < 18 && playfield_col >= 0 && playfield_col < 10) {
                 if (shape[row][col]) {
                     mPlayGrid[playfield_row][playfield_col] = shape[row][col];
-                    mPlayer->mPlayGridCopy[playfield_row][playfield_col] = shape[row][col];
+                    
                 }
             }
+            mPlayer->SetCopyGrid(mPlayGrid);
         }
     }
+    
 }
 
 void Level::AddScore(int change) {
