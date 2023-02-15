@@ -14,7 +14,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
     mStageStarted = false;
 
     mPlayer = player;
-
+    
     
 
     mBlock = new Texture("TetrisBackground.png", 279, 15, 8, 8);
@@ -91,7 +91,7 @@ void Level::CheckForLines() {
             mSideBar->SetScore(mScore);
             mSideBar->SetLines(mSideBar->GetLines() + 1);
             mSideBar->SetLevel(mSideBar->GetLines());
-            //mPlayer->SetHeartbeat(mSideBar->GetLevels());
+            
             //DropLines();
             do {
                 for (int j = 0; j < 10; ++j) {
@@ -129,7 +129,6 @@ void Level::CheckForLines() {
             } while (i > 0);
         }
     }
-    mPlayer->SetCopyGrid(mPlayGrid);
 }
 
 
@@ -156,7 +155,6 @@ void Level::SetGridPointTrue(int x, int y, bool shape[4][4]) {
                     
                 }
             }
-            mPlayer->SetCopyGrid(mPlayGrid);
         }
     }
     

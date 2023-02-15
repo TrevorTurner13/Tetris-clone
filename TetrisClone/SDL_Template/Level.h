@@ -7,7 +7,7 @@
 class Level : public GameEntity {
 public:
     enum LevelStates { Running, Finished, GameOver };
-
+    bool mPlayGrid[18][10];
 private:
     InputManager* mInput;
     Timer* mTimer;
@@ -17,16 +17,12 @@ private:
 
     Texture* mBlock;
 
-    bool mPlayGrid[18][10];
+    
     Texture* mGridDisplay[18][10];
 
     int mStage;
     bool mStageStarted;
 
-    float mLabelTimer;
-
-    Scoreboard* mStageNumber;
-    float mStageSpeedUpdate;
     int mScore = 0;
 
     Vector2 gridPosition;

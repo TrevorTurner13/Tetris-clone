@@ -5,28 +5,27 @@ void Player::HandleMovement() {
     if (mHeartBeatUpdate) {
         mHeartBeatUpdate = false;
         Position(Position() + Vector2(0.0, 48.0));
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                if (currentShape.mGrid[i][j]) {
-                    if (CheckCopyGridTrue(pixelToGridY(Position().y + 1), pixelToGridX(Position().x))) {
-                        IsDown(true);
-                    }
-                }
-            }
-        }
         
+        if (CheckCollisionGPT()) {
+            IsDown(true);
+        }
     }
 
     if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
-        Position(Position() + mMove);
-        
+        if (!CheckCollisionRight()) {
+            Position(Position() + mMove);
+        }
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
-        Position(Position() - mMove);
-        
+        if (!CheckCollisionLeft()) {
+            Position(Position() - mMove);
+        }
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_DOWN)) {
         Position(Position() + mDropSpeed);
+        if (CheckCollisionGPT()) {
+            IsDown(true);
+        }
 
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_UP)) {
@@ -218,12 +217,68 @@ void Player::Render() {
 }
 
 void Player::SetHeartbeat(int levels) {
-    static const int requiredLevels[] = {
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-    };
-    while (levels = requiredLevels[levels]) {
-        mHeartBeat = GetHeartBeat()/2;
-    }
+    switch (levels) {
+    case 1: 
+        mHeartBeat = 1.5;
+        break;
+    case 2:
+        mHeartBeat = 1.4;
+        break;
+    case 3:
+        mHeartBeat = 1.3;
+        break;
+    case 4:
+        mHeartBeat = 1.2;
+        break;
+    case 5:
+        mHeartBeat = 1.1;
+        break;
+    case 6:
+        mHeartBeat = 1;
+        break;
+    case 7:
+        mHeartBeat = 0.95;
+        break;
+    case 8:
+        mHeartBeat = 0.9;
+        break;
+    case 9:
+        mHeartBeat = 0.85;
+        break;
+    case 10:
+        mHeartBeat = 0.8;
+        break;
+    case 11:
+        mHeartBeat = 0.75;
+        break;
+    case 12:
+        mHeartBeat = 0.7;
+        break;
+    case 13:
+        mHeartBeat = 0.65;
+        break;
+    case 14:
+        mHeartBeat = 0.6;
+        break;
+    case 15:
+        mHeartBeat = 0.55;
+        break;
+    case 16:
+        mHeartBeat = 0.5;
+        break;
+    case 17:
+        mHeartBeat = 0.45;
+        break;
+    case 18:
+        mHeartBeat = 0.4;
+        break;
+    case 19:
+        mHeartBeat = 0.35;
+        break;
+    case 20:
+        mHeartBeat = 0.3;
+        break;
+   }
 }
 
 
@@ -337,27 +392,24 @@ void Player::Rotate() {
     }
 }
 
-bool Player::CheckCollision(int x, int y) {
-    bool gridClear = true;
-    for (int i = 0; i < 18; ++i){
-        for (int j = 0; j < 10; ++j){
-            if (CheckCopyGridTrue(i + 1, j)){
-                    gridClear = false;
-                }
-            }
-        }
-    return gridClear;
-}
-
-bool Player::CheckCopyGridTrue(int x, int y) {
-    if (mPlayGridCopy[x][y]) {
-
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+//bool Player::CheckCopyGridTrue(int x, int y) {
+//    for (int row = 0; row < 4; ++row) {
+//        for (int col = 0; col < 4; ++col) {
+//            int playfield_row = row + y;
+//            int playfield_col = col + x;
+//            if (playfield_row >= 0 && playfield_row < 18 && playfield_col >= 0 && playfield_col < 10) {
+//                if (currentShape.mGrid[row][col]) {
+//                    if (mPlayGridCopy[playfield_row][playfield_col]) {
+//                        return true;
+//                    }
+//                }
+//            }
+//            else {
+//                return false;
+//            }
+//        }
+//    }
+//}
 
 void Player::SetCopyGrid(bool playGrid[18][10]) {
     for (int i = 0; i < 18; ++i) {
@@ -366,4 +418,79 @@ void Player::SetCopyGrid(bool playGrid[18][10]) {
         }
     }
     
+}
+
+bool Player::CheckCollisionGPT() {
+    // Check for collisions between the falling shape and the playfield
+    bool hasCollision = false;
+    int shapeX = pixelToGridX(Position().x);
+    int shapeY = pixelToGridY(Position().y);
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            if (currentShape.mGrid[y][x]) {
+                int playfieldX = shapeX + x;
+                int playfieldY = shapeY + y;
+                if (playfieldX < 0 || playfieldX >= 10 ||
+                    playfieldY < 0 || playfieldY >= 18 ||
+                    mPlayGridCopy[playfieldY + 1][playfieldX]) {
+                    hasCollision = true;
+                    break;
+                }
+            }
+        }
+        if (hasCollision) {
+            break;
+        }
+    }
+    return hasCollision;
+}
+
+bool Player::CheckCollisionRight() {
+    // Check for collisions between the falling shape and the playfield
+    bool hasCollision = false;
+    int shapeX = pixelToGridX(Position().x);
+    int shapeY = pixelToGridY(Position().y);
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            if (currentShape.mGrid[y][x]) {
+                int playfieldX = shapeX + x;
+                int playfieldY = shapeY + y;
+                if (playfieldX < 0 || playfieldX >= 10 ||
+                    playfieldY < 0 || playfieldY >= 18 ||
+                    mPlayGridCopy[playfieldY][playfieldX + 1]) {
+                    hasCollision = true;
+                    break;
+                }
+            }
+        }
+        if (hasCollision) {
+            break;
+        }
+    }
+    return hasCollision;
+}
+
+bool Player::CheckCollisionLeft() {
+    // Check for collisions between the falling shape and the playfield
+    bool hasCollision = false;
+    int shapeX = pixelToGridX(Position().x);
+    int shapeY = pixelToGridY(Position().y);
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            if (currentShape.mGrid[y][x]) {
+                int playfieldX = shapeX + x;
+                int playfieldY = shapeY + y;
+                if (playfieldX < 0 || playfieldX >= 10 ||
+                    playfieldY < 0 || playfieldY >= 18 ||
+                    mPlayGridCopy[playfieldY][playfieldX - 1]) {
+                    hasCollision = true;
+                    break;
+                }
+            }
+        }
+        if (hasCollision) {
+            break;
+        }
+    }
+    return hasCollision;
 }

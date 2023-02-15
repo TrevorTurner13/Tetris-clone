@@ -18,6 +18,7 @@ PlayScreen::PlayScreen() {
     mPlayArea->Position(Graphics::SCREEN_WIDTH * 0.325f, Graphics::SCREEN_HEIGHT * 0.5f);
     //mPlayArea->Scale(Vector2(6.0f, 6.0f));
 
+    mLevel = nullptr;
     mBlock = nullptr;
     mBlock1 = nullptr;
 
@@ -63,31 +64,25 @@ void PlayScreen::Update() {
         mBlock->Update();
         mBlock1->Update();
         if (mBlock->Active()) {
-            if (mLevel->CheckGridTrue(mBlock->pixelToGridY(mBlock->Position().y), mBlock->pixelToGridX(mBlock->Position().x))) {
-
-                mBlock->Position(mBlock->Position().x, mBlock->Position().y - 1);
-                mBlock->IsDown(true);
-            }
             if (mBlock->GetIsDown()) {
-                NextBlock();
+                mLevel->SetGridPointTrue(mBlock->pixelToGridX(mBlock->Position().x), mBlock->pixelToGridY(mBlock->Position().y), mBlock->currentShape.mGrid);
                 mLevel->CheckForLines();
+                NextBlock();
                 mSideBar->GetLines();
-               
+                mBlock->SetHeartbeat(mSideBar->GetLevels());
+                mBlock1->SetHeartbeat(mSideBar->GetLevels());
                 mBlock->Update();
                 mBlock1->Update();
             }
         }
         if (mBlock1->Active()) {
-            if (mLevel->CheckGridTrue(mBlock1->pixelToGridY(mBlock1->Position().y), mBlock1->pixelToGridX(mBlock1->Position().x))) {
-
-                mBlock1->Position(mBlock1->Position().x, mBlock1->Position().y - 1);
-                mBlock1->IsDown(true);
-            }
             if (mBlock1->GetIsDown()) {
-                NextBlock();
+                mLevel->SetGridPointTrue(mBlock1->pixelToGridX(mBlock1->Position().x), mBlock1->pixelToGridY(mBlock1->Position().y), mBlock1->currentShape.mGrid);
                 mLevel->CheckForLines();
+                NextBlock();
                 mSideBar->GetLines();
-                
+                mBlock->SetHeartbeat(mSideBar->GetLevels());
+                mBlock1->SetHeartbeat(mSideBar->GetLevels());
                 mBlock->Update();
                 mBlock1->Update();
             }        
@@ -164,20 +159,21 @@ void PlayScreen::NextBlock() {
         mLevel->AddScore(100);
         mSideBar->SetScore(mLevel->Score());
         mBlock->Active(false);
-        mLevel->SetGridPointTrue(mBlock->pixelToGridX(mBlock->Position().x), mBlock->pixelToGridY(mBlock->Position().y), mBlock->currentShape.mGrid);
+        
         mBlock1->Position(357.0f, 24.0f);
         mBlock1->Active(true);
         delete mBlock;
         mBlock = new Player();
         mBlock->Parent(this);
         mBlock->Position(780.0f, 680.0f);
-        mBlock->Active(false);
+        mBlock->Active(false);       
     }
+
     else if (mBlock1->Active()) {
         mLevel->AddScore(100);
         mSideBar->SetScore(mLevel->Score());
         mBlock1->Active(false);
-        mLevel->SetGridPointTrue(mBlock1->pixelToGridX(mBlock1->Position().x), mBlock1->pixelToGridY(mBlock1->Position().y), mBlock1->currentShape.mGrid);
+       
         mBlock->Position(357.0f, 24.0f);
         mBlock->Active(true);
         delete mBlock1;
@@ -186,7 +182,9 @@ void PlayScreen::NextBlock() {
         mBlock1->Position(780.0f, 680.0f);
         mBlock1->Active(false);
     }
-    
+
+    mBlock1->SetCopyGrid(mLevel->mPlayGrid);
+    mBlock->SetCopyGrid(mLevel->mPlayGrid);
     
 }
 

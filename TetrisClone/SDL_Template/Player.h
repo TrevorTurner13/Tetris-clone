@@ -111,7 +111,7 @@ private:
     Vector2 mMoveBoundsX;
     Vector2 mMoveBoundsY;
 
-    float mHeartBeat = 1.0;
+    float mHeartBeat = 1.5;
     float mHeartBeatCurrent = mHeartBeat;
     bool mHeartBeatUpdate = false;
     
@@ -145,8 +145,10 @@ public:
     int min(int a, int b);
     int max(int a, int b);
 
-    bool CheckCollision(int x, int y);
-    bool CheckCopyGridTrue(int x, int y);
+    bool CheckCollisionGPT();
+    bool CheckCollisionLeft();
+    bool CheckCollisionRight();
+    //bool CheckCopyGridTrue(int x, int y);
 
     void Update() override;
     void Render() override;
