@@ -10,6 +10,7 @@ public:
     bool mPlayGrid[18][10];
 private:
     InputManager* mInput;
+    AudioManager* mAudio;
     Timer* mTimer;
     GameEntity* mPlayArea;
     PlaySideBar* mSideBar;

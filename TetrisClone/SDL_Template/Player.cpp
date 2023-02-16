@@ -5,6 +5,7 @@ void Player::HandleMovement() {
     if (mHeartBeatUpdate) {
         mHeartBeatUpdate = false;
         Position(Position() + Vector2(0.0, 48.0));
+        mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
         
         if (CheckCollisionGPT()) {
             IsDown(true);
@@ -12,17 +13,21 @@ void Player::HandleMovement() {
     }
 
     if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
+
         if (!CheckCollisionRight()) {
             Position(Position() + mMove);
+            mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
         }
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
         if (!CheckCollisionLeft()) {
             Position(Position() - mMove);
+            mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
         }
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_DOWN)) {
         Position(Position() + mDropSpeed);
+        mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
         if (CheckCollisionGPT()) {
             IsDown(true);
         }
@@ -31,6 +36,7 @@ void Player::HandleMovement() {
     else if (mInput->KeyPressed(SDL_SCANCODE_UP)) {
         Rotate();
         UpdateShapeDimensions();
+        mAudio->PlaySFX("SFX/Tetris (GB) (19)-rotate_piece.wav", 0, -1);
     }
     
     Vector2 pos = Position(World);

@@ -82,10 +82,14 @@ StartScreen::~StartScreen() {
 
 void StartScreen::Update() {
     if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
+        mAudio->PlaySFX("SFX/Tetris (GB) (17)-menu_sound.wav", 0, -1);
         ChangeSelectedMode(1);
+       
     }
     else if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
+        mAudio->PlaySFX("SFX/Tetris (GB) (17)-menu_sound.wav", 0, -1);
         ChangeSelectedMode(-1);
+       
     }
 
     mTitleBar->Update();

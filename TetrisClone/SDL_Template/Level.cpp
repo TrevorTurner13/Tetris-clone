@@ -6,6 +6,7 @@ void Level::StartStage() {
 
 Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
     mInput = InputManager::Instance();
+    mAudio = AudioManager::Instance();
     mTimer = Timer::Instance();
     mSideBar = sideBar;
     mSideBar->SetLevel(stage);
@@ -87,6 +88,7 @@ void Level::CheckForLines() {
             mPlayGrid[i][7] = false;
             mPlayGrid[i][8] = false;
             mPlayGrid[i][9] = false;
+            mAudio->PlaySFX("SFX/Tetris (GB) (21)-line_clear.wav", 0, -1);
             AddScore(1000);
             mSideBar->SetScore(mScore);
             mSideBar->SetLines(mSideBar->GetLines() + 1);
