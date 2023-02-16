@@ -26,6 +26,7 @@ private:
     Player* mBlock1;
    
     bool mGameStarted;
+    bool mGameOver;
 
     int mScore;
 
@@ -40,7 +41,7 @@ public:
     PlayScreen();
     ~PlayScreen();
 
-    bool GameOver();
+    void GameOver();
 
     void StartNewGame();
 

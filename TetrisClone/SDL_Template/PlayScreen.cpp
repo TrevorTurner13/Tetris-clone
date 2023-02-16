@@ -23,6 +23,10 @@ PlayScreen::PlayScreen() {
     mBlock1 = nullptr;
 
     mScore = 0;
+    mCurrentStage = 0;
+    mGameStarted = false;
+    mLevelStarted = false;
+    mGameOver = false;
 }
 
 PlayScreen::~PlayScreen() {
@@ -53,8 +57,10 @@ PlayScreen::~PlayScreen() {
 void PlayScreen::Update() {
     mPlayArea->Update();
     mSideBar->Update();
-    
-    if (mGameStarted) {
+    if (mLevel != nullptr) {
+        mLevel->Update();
+    }
+    if (mGameStarted && !mGameOver) {
         if (!mLevelStarted) {
             StartNextLevel();
         }
@@ -85,28 +91,30 @@ void PlayScreen::Update() {
                 mBlock1->SetHeartbeat(mSideBar->GetLevels());
                 mBlock->Update();
                 mBlock1->Update();
-            }        
+            }
         }
     }
     else {
         if (!Mix_PlayingMusic()) {
             mGameStarted = true;
         }
+
     }
-    
-    //mBlock->Update();
+
+    if(mGameOver) {
+        GameOver();
+    }
 }
 
 void PlayScreen::Render() {
     mPlayArea->Render();
     mSideBar->Render();
-   // mBlock->Render();
 
     if (mGameStarted && mLevelStarted) {
         mLevel->Render();
     }
-
-    if (mGameStarted) {
+   
+    if (mGameStarted && !mGameOver) {
 
         if (mLevelStarted) {
             mLevel->Render();
@@ -125,14 +133,11 @@ void PlayScreen::StartNewGame() {
     mLevelStarted = false;
     mCurrentStage = 0;
 
-    mAudio->PauseMusic();
-    mAudio->PlayMusic("Music/03. A-Type Music (Korobeiniki).mp3", -1);
-
     delete mBlock;
     mBlock = new Player();
     mBlock->Parent(this);
     mBlock->Position(357.0f, 24.0f);
-    mBlock->Active(true);
+    mBlock->Active(true);  
 
     delete mBlock1;
     mBlock1 = new Player();
@@ -143,7 +148,6 @@ void PlayScreen::StartNewGame() {
     mSideBar->SetScore(0);
     mSideBar->SetLines(0);
     mSideBar->SetLevel(0);
-   
 }
 
 void PlayScreen::StartNextLevel() {
@@ -152,39 +156,53 @@ void PlayScreen::StartNextLevel() {
 
     delete mLevel;
     mLevel = new Level(mCurrentStage, mSideBar, mBlock);
+
+    mBlock->SetCopyGrid(mLevel->mPlayGrid);
+    mBlock1->SetCopyGrid(mLevel->mPlayGrid);
 }
 
 void PlayScreen::NextBlock() {
-    if (mBlock->Active()) {
-        mLevel->AddScore(100);
-        mSideBar->SetScore(mLevel->Score());
-        mBlock->Active(false);
-        
-        mBlock1->Position(357.0f, 24.0f);
-        mBlock1->Active(true);
-        delete mBlock;
-        mBlock = new Player();
-        mBlock->Parent(this);
-        mBlock->Position(780.0f, 680.0f);
-        mBlock->Active(false);       
+    if (mLevel->CheckGridTrue(2, 5) ||
+        mLevel->CheckGridTrue(2, 6) ||
+        mLevel->CheckGridTrue(2, 7)) {
+        mGameOver = true;
     }
+    else {
+        if (mBlock->Active()) {
+            mLevel->AddScore(100);
+            mSideBar->SetScore(mLevel->Score());
+            mBlock->Active(false);
 
-    else if (mBlock1->Active()) {
-        mLevel->AddScore(100);
-        mSideBar->SetScore(mLevel->Score());
-        mBlock1->Active(false);
-       
-        mBlock->Position(357.0f, 24.0f);
-        mBlock->Active(true);
-        delete mBlock1;
-        mBlock1 = new Player();
-        mBlock1->Parent(this);
-        mBlock1->Position(780.0f, 680.0f);
-        mBlock1->Active(false);
+            mBlock1->Position(357.0f, 24.0f);
+            mBlock1->Active(true);
+            delete mBlock;
+            mBlock = new Player();
+            mBlock->Parent(this);
+            mBlock->Position(780.0f, 680.0f);
+            mBlock->Active(false);
+        }
+
+        else if (mBlock1->Active()) {
+            mLevel->AddScore(100);
+            mSideBar->SetScore(mLevel->Score());
+            mBlock1->Active(false);
+
+            mBlock->Position(357.0f, 24.0f);
+            mBlock->Active(true);
+            delete mBlock1;
+            mBlock1 = new Player();
+            mBlock1->Parent(this);
+            mBlock1->Position(780.0f, 680.0f);
+            mBlock1->Active(false);
+        }
+
+        mBlock1->SetCopyGrid(mLevel->mPlayGrid);
+        mBlock->SetCopyGrid(mLevel->mPlayGrid);
     }
+}
 
-    mBlock1->SetCopyGrid(mLevel->mPlayGrid);
-    mBlock->SetCopyGrid(mLevel->mPlayGrid);
-    
+
+void PlayScreen::GameOver() {
+    mLevel->SetLevelGameOver(true);   
 }
 

@@ -19,21 +19,23 @@ void Player::HandleMovement() {
             mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
         }
     }
+
     else if (mInput->KeyPressed(SDL_SCANCODE_LEFT)) {
         if (!CheckCollisionLeft()) {
             Position(Position() - mMove);
             mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
         }
     }
-    else if (mInput->KeyPressed(SDL_SCANCODE_DOWN)) {
-        Position(Position() + mDropSpeed);
-        mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
-        if (CheckCollisionGPT()) {
-            IsDown(true);
-        }
-
+    
+    if (mInput->KeyDown(SDL_SCANCODE_DOWN)) {   
+        mHeartBeat = mHeartBeatFast;
     }
-    else if (mInput->KeyPressed(SDL_SCANCODE_UP)) {
+    
+    else {
+        mHeartBeat = mHeartBeatSlow;
+    }
+    
+    if (mInput->KeyPressed(SDL_SCANCODE_UP)) {
         Rotate();
         UpdateShapeDimensions();
         mAudio->PlaySFX("SFX/Tetris (GB) (19)-rotate_piece.wav", 0, -1);
@@ -68,11 +70,87 @@ Player::Player() {
 
     mVisible = true;
     mIsDown = false;
-    mNextBlock = false;
     mCurrentShapeIsIShape = false;
+
+    mHeartBeat = 1.5;
+    mHeartBeatFast = .1;
+    mHeartBeatSlow = 1.5;
+    mHeartBeatCurrent = mHeartBeat;
+    mHeartBeatUpdate = false;
 
     mShapeWidth = 0;
     mShapeHeight = 0; 
+
+    mMove = Vector2(48.0f, 0.0f);
+    mMoveBoundsX = Vector2(117.0f, 597.0f);
+    mMoveBoundsY = Vector2(0.0f, 888.0f);
+    // L BLOCK
+    mLShape = {
+        {
+            {0,0,1,0}, 
+            {1,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
+    };
+    // Z BLOCK
+    mZShape = {
+        {
+            {1,1,0,0}, 
+            {0,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
+    };
+    // I BLOCK
+    mIShape = {
+        {
+            {1,1,1,1,},
+            {0,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 4
+    };
+
+    // J BLOCK
+    mJShape = {
+        {
+            {1,0,0,0},
+            {1,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
+    };
+
+    // O BLOCK
+    mOShape = {
+        {
+            {1,1,0,0},
+            {1,1,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 2
+    };
+
+    // S BLOCK
+    mSShape = {
+        {
+            {0,1,1,0},
+            {1,1,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
+    };
+
+    // T BLOCK
+    mTShape = {
+        {
+            {0,1,0,0},
+            {1,1,1,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        }, 3
+    };
 
     int randomIndex = rand() % NUM_ARRAYS[6];
     switch (randomIndex) {
@@ -158,13 +236,6 @@ Player::Player() {
 
     UpdateShapeDimensions();
 
-    mDropSpeed = Vector2(0.0f, 48.0f);
-    mMove = Vector2(48.0f, 0.0f);
-    mMoveSpeed = 330.0f;
-
-    mMoveBoundsX = Vector2(117.0f, 597.0f);
-    mMoveBoundsY = Vector2(0.0f, 888.0f);
-     
 }
 
 Player::~Player() {
@@ -184,14 +255,15 @@ void Player::Visible(bool visible) {
 
 void Player::IsDown(bool isDown) {
     mIsDown = isDown;
+    mAudio->PlaySFX("SFX/Tetris (GB) (27)-piece_landed.wav", 0, -1);
 }
 
 void Player::Update() {
     if (Active()) {
-        mHeartBeatCurrent -= mTimer->DeltaTime();
-        if (mHeartBeatCurrent <= 0) {
+        mHeartBeatCurrent += mTimer->DeltaTime();
+        if (mHeartBeatCurrent >= mHeartBeat) {
             mHeartBeatUpdate = true;
-            mHeartBeatCurrent = mHeartBeat;
+            mHeartBeatCurrent = 0;
         }
 
         if (mIsDown) {
@@ -225,64 +297,64 @@ void Player::Render() {
 void Player::SetHeartbeat(int levels) {
     switch (levels) {
     case 1: 
-        mHeartBeat = 1.5;
+        mHeartBeatSlow = 1.5;
         break;
     case 2:
-        mHeartBeat = 1.4;
+        mHeartBeatSlow = 1.375;
         break;
     case 3:
-        mHeartBeat = 1.3;
+        mHeartBeatSlow = 1.25;
         break;
     case 4:
-        mHeartBeat = 1.2;
+        mHeartBeatSlow = 1.125;
         break;
     case 5:
-        mHeartBeat = 1.1;
+        mHeartBeatSlow = 1.0;
         break;
     case 6:
-        mHeartBeat = 1;
+        mHeartBeatSlow = 0.875;
         break;
     case 7:
-        mHeartBeat = 0.95;
+        mHeartBeatSlow = 0.75;
         break;
     case 8:
-        mHeartBeat = 0.9;
+        mHeartBeatSlow = 0.625;
         break;
     case 9:
-        mHeartBeat = 0.85;
+        mHeartBeatSlow = 0.5;
         break;
     case 10:
-        mHeartBeat = 0.8;
+        mHeartBeatSlow = 0.375;
         break;
     case 11:
-        mHeartBeat = 0.75;
+        mHeartBeatSlow = 0.25;
         break;
     case 12:
-        mHeartBeat = 0.7;
+        mHeartBeatSlow = 0.125;
         break;
     case 13:
-        mHeartBeat = 0.65;
+        mHeartBeatSlow = 0.1;
         break;
     case 14:
-        mHeartBeat = 0.6;
+        mHeartBeatSlow = 0.1;
         break;
     case 15:
-        mHeartBeat = 0.55;
+        mHeartBeatSlow = 0.1;
         break;
     case 16:
-        mHeartBeat = 0.5;
+        mHeartBeatSlow = 0.1;
         break;
     case 17:
-        mHeartBeat = 0.45;
+        mHeartBeatSlow = 0.1;
         break;
     case 18:
-        mHeartBeat = 0.4;
+        mHeartBeatSlow = 0.1;
         break;
     case 19:
-        mHeartBeat = 0.35;
+        mHeartBeatSlow = 0.1;
         break;
     case 20:
-        mHeartBeat = 0.3;
+        mHeartBeatSlow = 0.1;
         break;
    }
 }
@@ -397,25 +469,6 @@ void Player::Rotate() {
         currentShape = translate(reverseCols(transpose(currentShape)));
     }
 }
-
-//bool Player::CheckCopyGridTrue(int x, int y) {
-//    for (int row = 0; row < 4; ++row) {
-//        for (int col = 0; col < 4; ++col) {
-//            int playfield_row = row + y;
-//            int playfield_col = col + x;
-//            if (playfield_row >= 0 && playfield_row < 18 && playfield_col >= 0 && playfield_col < 10) {
-//                if (currentShape.mGrid[row][col]) {
-//                    if (mPlayGridCopy[playfield_row][playfield_col]) {
-//                        return true;
-//                    }
-//                }
-//            }
-//            else {
-//                return false;
-//            }
-//        }
-//    }
-//}
 
 void Player::SetCopyGrid(bool playGrid[18][10]) {
     for (int i = 0; i < 18; ++i) {

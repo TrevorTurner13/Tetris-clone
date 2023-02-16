@@ -15,8 +15,14 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
     mStageStarted = false;
 
     mPlayer = player;
-    
-    
+
+    mScore = 0;
+
+    mLevelGameOver = false;
+    mGameOverTimer = 0.05;
+    mGameOverCurrent = mGameOverTimer;
+    mGameOverUpdate = false;
+    mGameOverRow = 17;
 
     mBlock = new Texture("TetrisBackground.png", 279, 15, 8, 8);
     mBlock->Parent(this);
@@ -31,7 +37,6 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
             mGridDisplay[i][j]->Parent(this);
             mGridDisplay[i][j]->Position(117 + (j * 48), 24 + (i * 48));
             mGridDisplay[i][j]->Scale(Vector2(6.0f, 6.0f));
-            
         }
     }
 }
@@ -43,10 +48,18 @@ Level::~Level() {
 }
 
 void Level::Update() {
-    mPlayer->Active(true);
-    mPlayer->Visible(true);
-
-
+    if (mLevelGameOver) {
+        mGameOverCurrent -= mTimer->DeltaTime();
+        if (mGameOverCurrent <= 0) {
+            mGameOverCurrent = mGameOverTimer;
+            GameOverGridSet();
+            mGameOverRow--;
+            if (mGameOverRow < 0) {
+            // this is where game over appears and asks for input
+            }
+        }
+        std::cout << "GameOverCurrent " << mGameOverCurrent << std::endl;
+    }
 }
 
 void Level::Render() {
@@ -166,3 +179,16 @@ void Level::AddScore(int change) {
     mScore += change;
 }
 
+void Level::GameOverGridSet() {
+    for (int i = 0; i < 10; ++i) {
+        mPlayGrid[mGameOverRow][i] = true;
+    }
+}
+
+void Level::SetLevelGameOver(bool gameOver) {
+    if (gameOver) {
+        mLevelGameOver = true;
+    }
+    else
+        mLevelGameOver = false;
+};

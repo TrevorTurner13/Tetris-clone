@@ -24,74 +24,15 @@ private:
 
     Texture* mBlock;
     PlayArea* mPlayArea;
-
     Texture* mShapeTexture[4][4];
-    Shape mLShape = {
-        { 
-            {0,0,1,0}, // L BLOCK
-            {1,1,1,0},
-            {0,0,0,0},
-            {0,0,0,0} 
-        }, 3 
-    };
 
-    Shape mZShape = {
-        {
-            {1,1,0,0}, // Z BLOCK
-            {0,1,1,0},
-            {0,0,0,0},
-            {0,0,0,0} 
-        }, 3 
-    };
-    
-    Shape mIShape = { 
-        {
-            {1,1,1,1,}, // I BLOCK
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0}
-        }, 4
-    };
-
-    // J BLOCK
-    Shape mJShape = { 
-        {
-            {1,0,0,0},
-            {1,1,1,0},
-            {0,0,0,0},
-            {0,0,0,0}
-        }, 3
-    };
-
-    // O BLOCK
-    Shape mOShape = { 
-        {
-            {1,1,0,0},
-            {1,1,0,0},
-            {0,0,0,0},
-            {0,0,0,0}
-        }, 2
-    };
-
-    // S BLOCK
-    Shape mSShape = { 
-        {
-            {0,1,1,0},
-            {1,1,0,0},
-            {0,0,0,0},
-            {0,0,0,0}
-        }, 3
-    };
-
-    // T BLOCK
-    Shape mTShape = { 
-        {
-            {0,1,0,0},
-            {1,1,1,0},
-            {0,0,0,0},
-            {0,0,0,0}
-        }, 3
-    };
+    Shape mLShape;
+    Shape mZShape;
+    Shape mIShape;
+    Shape mJShape;
+    Shape mOShape;
+    Shape mSShape;
+    Shape mTShape;
 
     const int NUM_ARRAYS[7] = { 0, 1, 2, 3, 4, 5, 6 };
    
@@ -100,20 +41,17 @@ private:
 
     bool mVisible;
     bool mIsDown;
-    bool mNextBlock;
     bool mCurrentShapeIsIShape;
     
-
-    float mMoveSpeed;
-    Vector2 mDropSpeed;
-    Vector2 mMove;
-   
+    Vector2 mMove;   
     Vector2 mMoveBoundsX;
     Vector2 mMoveBoundsY;
 
-    float mHeartBeat = 1.5;
-    float mHeartBeatCurrent = mHeartBeat;
-    bool mHeartBeatUpdate = false;
+    float mHeartBeat;
+    float mHeartBeatFast;
+    float mHeartBeatSlow;
+    float mHeartBeatCurrent;
+    bool mHeartBeatUpdate;
     
     bool mPlayGridCopy[18][10];
 

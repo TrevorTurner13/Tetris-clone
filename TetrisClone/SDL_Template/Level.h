@@ -6,27 +6,28 @@
 
 class Level : public GameEntity {
 public:
-    enum LevelStates { Running, Finished, GameOver };
     bool mPlayGrid[18][10];
 private:
     InputManager* mInput;
     AudioManager* mAudio;
     Timer* mTimer;
-    GameEntity* mPlayArea;
+
     PlaySideBar* mSideBar;
     Player* mPlayer;
-
     Texture* mBlock;
-
-    
     Texture* mGridDisplay[18][10];
 
     int mStage;
     bool mStageStarted;
 
-    int mScore = 0;
+    int mScore;
 
-    Vector2 gridPosition;
+    bool mLevelGameOver;
+    
+    float mGameOverTimer;
+    float mGameOverCurrent;
+    bool mGameOverUpdate;
+    int mGameOverRow;
 
 public:
     Level(int stage, PlaySideBar* sideBar, Player* player);
@@ -38,6 +39,9 @@ public:
     void CheckForLines();
     bool CheckGridTrue(int x, int y);
     void SetGridPointTrue(int x, int y, bool shape[4][4]);
+
+    void SetLevelGameOver(bool gameOver);
+    void GameOverGridSet();
 
     void Update() override;
     void Render() override;
