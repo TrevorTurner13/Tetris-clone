@@ -16,7 +16,7 @@ private:
     Player* mPlayer;
     Texture* mBlock;
     Texture* mGridDisplay[18][10];
-
+   
     int mStage;
     bool mStageStarted;
 
@@ -34,6 +34,7 @@ public:
     ~Level();
     
     int Score() { return mScore; }
+    int GetGameOverRow() { return mGameOverRow; }
     void AddScore(int change);
     void StartStage();
     void CheckForLines();

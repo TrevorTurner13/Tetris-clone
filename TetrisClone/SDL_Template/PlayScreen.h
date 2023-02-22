@@ -24,7 +24,7 @@ private:
     PlayArea* mPlayArea;
     Player* mBlock;
     Player* mBlock1;
-   
+    
     bool mGameStarted;
     bool mGameOver;
 
@@ -42,6 +42,8 @@ public:
     ~PlayScreen();
 
     void GameOver();
+    bool GetGameOver() { return mGameOver; }
+    Level* GetLevel() { return mLevel; }
 
     void StartNewGame();
 

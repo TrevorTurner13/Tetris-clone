@@ -4,12 +4,13 @@
 #include "NintendoScreen.h"
 #include "Legal.h"
 #include "PlayScreen.h"
+#include "GameOver.h"
 
 class ScreenManager {
 private:
     static ScreenManager* sInstance;
 
-    enum Screens { NINTENDO, LEGAL, START, PLAY };
+    enum Screens { NINTENDO, LEGAL, START, PLAY, GAMEOVER };
     Screens mCurrentScreen;
 
     InputManager* mInput;
@@ -19,6 +20,7 @@ private:
     LegalScreen* mLegalScreen;
     StartScreen* mStartScreen;
     PlayScreen* mPlayScreen;
+    GameOver* mGameOver;
 
 public:
     static ScreenManager* Instance();

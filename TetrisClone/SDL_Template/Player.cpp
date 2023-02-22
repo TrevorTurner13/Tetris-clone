@@ -56,9 +56,6 @@ void Player::HandleMovement() {
         pos.y = mMoveBoundsY.y - mShapeHeight;
         IsDown(true);
     }
-
-    std::cout << "Position x: " << Position().x << std::endl;
-
     Position(pos);
 }
     
@@ -152,7 +149,7 @@ Player::Player() {
         }, 3
     };
 
-    int randomIndex = rand() % NUM_ARRAYS[6];
+    int randomIndex = rand() % NUM_ARRAYS[7];
     switch (randomIndex) {
     case 0:
         currentShape = mLShape;
@@ -279,7 +276,6 @@ void Player::Update() {
 
 void Player::Render() {
     if (mVisible) {
-       //mBlock->Render();
        for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 if (currentShape.mGrid[i][j]) {
@@ -393,7 +389,6 @@ void Player::UpdateShapeDimensions() {
     width = (max_col - min_col + 1) * 48;
     height = (max_row - min_row + 1) * 48;
 
-    std::cout << "x position: " << Position().x << "     Width: " << width << "    Height : " << height << std::endl;
     mShapeWidth = width;
     mShapeHeight = height;
 }
@@ -552,4 +547,13 @@ bool Player::CheckCollisionLeft() {
         }
     }
     return hasCollision;
+}
+
+bool Player::IShape() {
+    if (mCurrentShapeIsIShape) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }

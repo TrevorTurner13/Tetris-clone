@@ -24,6 +24,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
     mGameOverUpdate = false;
     mGameOverRow = 17;
 
+
     mBlock = new Texture("TetrisBackground.png", 279, 15, 8, 8);
     mBlock->Parent(this);
     mBlock->Position(Vec2_Zero);
@@ -55,10 +56,12 @@ void Level::Update() {
             GameOverGridSet();
             mGameOverRow--;
             if (mGameOverRow < 0) {
+                mAudio->PlaySFX("SFX/Tetris (GB) (25)-game_over.wav", 0, -1);
+             
             // this is where game over appears and asks for input
             }
         }
-        std::cout << "GameOverCurrent " << mGameOverCurrent << std::endl;
+        
     }
 }
 
@@ -75,6 +78,7 @@ void Level::Render() {
             }
         }
     }
+   
 }
 
 void Level::CheckForLines() {
@@ -186,9 +190,5 @@ void Level::GameOverGridSet() {
 }
 
 void Level::SetLevelGameOver(bool gameOver) {
-    if (gameOver) {
-        mLevelGameOver = true;
-    }
-    else
-        mLevelGameOver = false;
+        mLevelGameOver = gameOver;
 };

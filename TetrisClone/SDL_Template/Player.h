@@ -86,7 +86,7 @@ public:
     bool CheckCollisionGPT();
     bool CheckCollisionLeft();
     bool CheckCollisionRight();
-    //bool CheckCopyGridTrue(int x, int y);
+    bool IShape();
 
     void Update() override;
     void Render() override;

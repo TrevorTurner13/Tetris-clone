@@ -23,6 +23,7 @@ ScreenManager::ScreenManager() {
     mLegalScreen = new LegalScreen();
     mStartScreen = new StartScreen();
     mPlayScreen = new PlayScreen();
+    mGameOver = new GameOver();
     mCurrentScreen = NINTENDO;
 }
 
@@ -38,6 +39,9 @@ ScreenManager::~ScreenManager() {
     mStartScreen = nullptr;
     delete mPlayScreen;
     mPlayScreen = nullptr;
+    delete mGameOver;
+    mGameOver = nullptr;
+
 }
 
 void ScreenManager::Update() {
@@ -73,8 +77,28 @@ void ScreenManager::Update() {
             mAudio->PauseMusic();
             mAudio->PlayMusic("Music/01. Title.mp3", -1);
         }
+        if (mPlayScreen->GetGameOver() && mPlayScreen->GetLevel()->GetGameOverRow() < 0) {
+            mCurrentScreen = GAMEOVER;
+            mAudio->PlayMusic("Music/18. Game Over.mp3", -1);
+            mAudio->PauseMusic();
+            mAudio->PlayMusic("Music/05. C-Type Music.mp3", -1);
+        }
 
         break;
+
+    case GAMEOVER:
+        mGameOver->Update();
+        if (mInput->KeyPressed(SDL_SCANCODE_RETURN)) {
+            mCurrentScreen = PLAY;
+            mAudio->PauseMusic();
+            mAudio->PlayMusic("Music/03. A-Type Music (Korobeiniki).mp3", -1);
+            mPlayScreen->StartNewGame();
+        }
+        if (mInput->KeyPressed(SDL_SCANCODE_ESCAPE)) {
+            mCurrentScreen = START;
+            mAudio->PlayMusic("Music/01. Title.mp3", -1);
+        }
+      
     }
 }
 
@@ -93,5 +117,7 @@ void ScreenManager::Render() {
     case PLAY:
         mPlayScreen->Render();
         break;
+    case GAMEOVER:
+        mGameOver->Render();
     }
 }

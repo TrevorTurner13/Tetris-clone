@@ -129,6 +129,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>Source Files\Tetris</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEntity.h">
@@ -216,6 +219,9 @@
       <Filter>Header Files\Tetris</Filter>
     </ClInclude>
     <ClInclude Include="PlayArea.h">
+      <Filter>Header Files\Tetris</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
       <Filter>Header Files\Tetris</Filter>
     </ClInclude>
   </ItemGroup>

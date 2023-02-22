@@ -16,7 +16,7 @@ PlayScreen::PlayScreen() {
     mPlayArea = new PlayArea();//new Texture("TetrisBackground.png", 0, 0, 105, 144);
     mPlayArea->Parent(mPlayScreen);
     mPlayArea->Position(Graphics::SCREEN_WIDTH * 0.325f, Graphics::SCREEN_HEIGHT * 0.5f);
-    //mPlayArea->Scale(Vector2(6.0f, 6.0f));
+
 
     mLevel = nullptr;
     mBlock = nullptr;
@@ -104,6 +104,7 @@ void PlayScreen::Update() {
     if(mGameOver) {
         GameOver();
     }
+   
 }
 
 void PlayScreen::Render() {
@@ -127,6 +128,10 @@ void PlayScreen::Render() {
 }
 
 void PlayScreen::StartNewGame() {
+    mGameOver = false;
+    //delete mPlayScreen;
+    //mPlayScreen = nullptr;
+    //mPlayScreen = new PlayScreen;
     mSideBar->SetLines(0);
     mSideBar->SetLevel(mSideBar->GetLines());
     mGameStarted = true;
@@ -136,13 +141,19 @@ void PlayScreen::StartNewGame() {
     delete mBlock;
     mBlock = new Player();
     mBlock->Parent(this);
-    mBlock->Position(357.0f, 24.0f);
+    mBlock->Position(309.0f, 24.0f);
     mBlock->Active(true);  
 
     delete mBlock1;
     mBlock1 = new Player();
+    if (mBlock1->IShape()) {
+        mBlock1->Position(750.0f, 710.0f);
+    }
+    else {
+        mBlock1->Position(780.0f, 695.0f);
+    }
     mBlock1->Parent(this);
-    mBlock1->Position(780.0, 680.0f);
+    mBlock1->Position(780.0, 695.0f);
     mBlock1->Active(false);
 
     mSideBar->SetScore(0);
@@ -162,7 +173,9 @@ void PlayScreen::StartNextLevel() {
 }
 
 void PlayScreen::NextBlock() {
-    if (mLevel->CheckGridTrue(2, 5) ||
+    if (mLevel->CheckGridTrue(2, 3) || 
+        mLevel->CheckGridTrue(2, 4) ||
+        mLevel->CheckGridTrue(2, 5) ||
         mLevel->CheckGridTrue(2, 6) ||
         mLevel->CheckGridTrue(2, 7)) {
         mGameOver = true;
@@ -173,12 +186,17 @@ void PlayScreen::NextBlock() {
             mSideBar->SetScore(mLevel->Score());
             mBlock->Active(false);
 
-            mBlock1->Position(357.0f, 24.0f);
+            mBlock1->Position(309.0f, 24.0f);
             mBlock1->Active(true);
             delete mBlock;
             mBlock = new Player();
+            if (mBlock->IShape()) {
+                mBlock->Position(750.0f, 710.0f);
+            }
+            else {
+                mBlock->Position(780.0f, 695.0f);
+            }
             mBlock->Parent(this);
-            mBlock->Position(780.0f, 680.0f);
             mBlock->Active(false);
         }
 
@@ -187,13 +205,19 @@ void PlayScreen::NextBlock() {
             mSideBar->SetScore(mLevel->Score());
             mBlock1->Active(false);
 
-            mBlock->Position(357.0f, 24.0f);
+            mBlock->Position(309.0f, 24.0f);
             mBlock->Active(true);
             delete mBlock1;
             mBlock1 = new Player();
+            if (mBlock1->IShape()) {
+                mBlock1->Position(750.0f, 710.0f);
+            }
+            else {
+                mBlock1->Position(780.0f, 695.0f);
+            }
             mBlock1->Parent(this);
-            mBlock1->Position(780.0f, 680.0f);
             mBlock1->Active(false);
+            
         }
 
         mBlock1->SetCopyGrid(mLevel->mPlayGrid);
