@@ -171,11 +171,9 @@ void PlayScreen::StartNextLevel() {
 }
 
 void PlayScreen::NextBlock() {
-    if (mLevel->CheckGridTrue(2, 3) || 
-        mLevel->CheckGridTrue(2, 4) ||
-        mLevel->CheckGridTrue(2, 5) ||
-        mLevel->CheckGridTrue(2, 6) ||
-        mLevel->CheckGridTrue(2, 7)) {
+    if (mLevel->CheckGridTrue(2, 5) ||
+        mLevel->CheckGridTrue(1, 5) ||
+        mLevel->CheckGridTrue(0, 5)) {
         mGameOver = true;
     }
     else {

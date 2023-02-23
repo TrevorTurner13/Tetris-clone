@@ -13,8 +13,6 @@ public:
 	PlayArea();
 	~PlayArea();
 
-	void CheckForLines();
-
 	void Update() override;
 	void Render() override;
 };
