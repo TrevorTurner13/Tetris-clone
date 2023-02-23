@@ -67,8 +67,7 @@ void PlayScreen::Update() {
         if (mCurrentStage > 0) {
             mSideBar->Update();
         }
-        mBlock->Update();
-        mBlock1->Update();
+        
         if (mBlock->Active()) {
             if (mBlock->GetIsDown()) {
                 mLevel->SetGridPointTrue(mBlock->pixelToGridX(mBlock->Position().x), mBlock->pixelToGridY(mBlock->Position().y), mBlock->currentShape.mGrid);
@@ -104,7 +103,8 @@ void PlayScreen::Update() {
     if(mGameOver) {
         GameOver();
     }
-   
+    mBlock->Update();
+    mBlock1->Update();
 }
 
 void PlayScreen::Render() {
@@ -129,9 +129,7 @@ void PlayScreen::Render() {
 
 void PlayScreen::StartNewGame() {
     mGameOver = false;
-    //delete mPlayScreen;
-    //mPlayScreen = nullptr;
-    //mPlayScreen = new PlayScreen;
+
     mSideBar->SetLines(0);
     mSideBar->SetLevel(mSideBar->GetLines());
     mGameStarted = true;
@@ -147,7 +145,7 @@ void PlayScreen::StartNewGame() {
     delete mBlock1;
     mBlock1 = new Player();
     if (mBlock1->IShape()) {
-        mBlock1->Position(750.0f, 710.0f);
+        mBlock1->Position(710.0f, 740.0f);
     }
     else {
         mBlock1->Position(780.0f, 695.0f);
@@ -166,7 +164,7 @@ void PlayScreen::StartNextLevel() {
     mLevelStarted = true;
 
     delete mLevel;
-    mLevel = new Level(mCurrentStage, mSideBar, mBlock);
+    mLevel = new Level(mCurrentStage, mSideBar);
 
     mBlock->SetCopyGrid(mLevel->mPlayGrid);
     mBlock1->SetCopyGrid(mLevel->mPlayGrid);
@@ -191,7 +189,7 @@ void PlayScreen::NextBlock() {
             delete mBlock;
             mBlock = new Player();
             if (mBlock->IShape()) {
-                mBlock->Position(750.0f, 710.0f);
+                mBlock->Position(730.0f, 730.0f);
             }
             else {
                 mBlock->Position(780.0f, 695.0f);
@@ -210,7 +208,7 @@ void PlayScreen::NextBlock() {
             delete mBlock1;
             mBlock1 = new Player();
             if (mBlock1->IShape()) {
-                mBlock1->Position(750.0f, 710.0f);
+                mBlock1->Position(730.0f, 730.0f);
             }
             else {
                 mBlock1->Position(780.0f, 695.0f);

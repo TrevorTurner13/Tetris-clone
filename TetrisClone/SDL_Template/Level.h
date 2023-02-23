@@ -13,7 +13,6 @@ private:
     Timer* mTimer;
 
     PlaySideBar* mSideBar;
-    Player* mPlayer;
     Texture* mBlock;
     Texture* mGridDisplay[18][10];
    
@@ -30,7 +29,7 @@ private:
     int mGameOverRow;
 
 public:
-    Level(int stage, PlaySideBar* sideBar, Player* player);
+    Level(int stage, PlaySideBar* sideBar);
     ~Level();
     
     int Score() { return mScore; }

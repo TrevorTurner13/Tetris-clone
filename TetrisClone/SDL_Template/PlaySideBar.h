@@ -18,8 +18,6 @@ private:
     Scoreboard* mLinesLabel;
     int mLines;
 
-    void LevelUp();
-
 public:
     PlaySideBar();
     ~PlaySideBar();

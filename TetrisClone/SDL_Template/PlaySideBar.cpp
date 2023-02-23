@@ -68,10 +68,3 @@ void PlaySideBar::SetLines(int lines) {
     mLinesLabel->Score(lines);
 
 }
-//void PlaySideBar::ClearLevels() {
-//    SetLevel(0);
-//}
-//
-//void PlaySideBar::UpdateLevels() {
-//    if (mLines >= 200)
-//}

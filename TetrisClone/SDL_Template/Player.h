@@ -34,7 +34,7 @@ private:
     Shape mSShape;
     Shape mTShape;
 
-    const int NUM_ARRAYS[7] = { 0, 1, 2, 3, 4, 5, 6 };
+    const int NUM_ARRAYS[7] = { 1, 2, 3, 4, 5, 6, 7 };
    
     float mShapeWidth;
     float mShapeHeight;
@@ -60,7 +60,6 @@ public:
     Player();
     ~Player();
 
-    void Visible(bool visible);
     void SetHeartbeat(int levels);
     float GetHeartBeat() { return mHeartBeat; }
     void SetCopyGrid(bool playGrid[18][10]);

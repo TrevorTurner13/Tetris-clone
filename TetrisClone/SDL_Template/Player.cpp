@@ -3,13 +3,15 @@
 void Player::HandleMovement() {
     
     if (mHeartBeatUpdate) {
-        mHeartBeatUpdate = false;
-        Position(Position() + Vector2(0.0, 48.0));
-        mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
-        
         if (CheckCollisionGPT()) {
             IsDown(true);
         }
+        if (!GetIsDown()) {
+            mHeartBeatUpdate = false;
+            Position(Position() + Vector2(0.0, 48.0));
+            mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
+        }
+        
     }
 
     if (mInput->KeyPressed(SDL_SCANCODE_RIGHT)) {
@@ -17,6 +19,7 @@ void Player::HandleMovement() {
         if (!CheckCollisionRight()) {
             Position(Position() + mMove);
             mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
+        
         }
     }
 
@@ -24,6 +27,7 @@ void Player::HandleMovement() {
         if (!CheckCollisionLeft()) {
             Position(Position() - mMove);
             mAudio->PlaySFX("SFX/Tetris (GB) (18)-move_piece.wav", 0, -1);
+        
         }
     }
     
@@ -56,6 +60,7 @@ void Player::HandleMovement() {
         pos.y = mMoveBoundsY.y - mShapeHeight;
         IsDown(true);
     }
+    
     Position(pos);
 }
     
@@ -149,7 +154,7 @@ Player::Player() {
         }, 3
     };
 
-    int randomIndex = rand() % NUM_ARRAYS[7];
+    int randomIndex = rand() % NUM_ARRAYS[6];
     switch (randomIndex) {
     case 0:
         currentShape = mLShape;
@@ -244,11 +249,6 @@ Player::~Player() {
     mBlock = nullptr;
 
 }
-
-void Player::Visible(bool visible) {
-    mVisible = visible;
-}
-
 
 void Player::IsDown(bool isDown) {
     mIsDown = isDown;

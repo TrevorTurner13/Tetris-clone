@@ -4,7 +4,7 @@ void Level::StartStage() {
     mStageStarted = true;
 }
 
-Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
+Level::Level(int stage, PlaySideBar* sideBar) {
     mInput = InputManager::Instance();
     mAudio = AudioManager::Instance();
     mTimer = Timer::Instance();
@@ -13,8 +13,6 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
 
     mStage = stage;
     mStageStarted = false;
-
-    mPlayer = player;
 
     mScore = 0;
 
@@ -33,7 +31,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
     for (int i = 0; i < 18; ++i) {
         for (int j = 0; j < 10; ++j) {
             mPlayGrid[i][j] = false;
-            mPlayer->SetCopyGrid(mPlayGrid);
+            
             mGridDisplay[i][j] = new Texture("TetrisBackground.png", 279, 15, 8, 8);
             mGridDisplay[i][j]->Parent(this);
             mGridDisplay[i][j]->Position(117 + (j * 48), 24 + (i * 48));
@@ -45,7 +43,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player) {
 Level::~Level() {
     mTimer = nullptr;
     mSideBar = nullptr;
-    mPlayer = nullptr;
+    
 }
 
 void Level::Update() {

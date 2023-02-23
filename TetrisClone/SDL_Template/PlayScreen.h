@@ -34,9 +34,6 @@ private:
     bool mLevelStarted;
     int mCurrentStage;
 
-    void StartNextLevel();
-    void NextBlock();
-
 public:
     PlayScreen();
     ~PlayScreen();
@@ -44,8 +41,9 @@ public:
     void GameOver();
     bool GetGameOver() { return mGameOver; }
     Level* GetLevel() { return mLevel; }
-
+    void NextBlock();
     void StartNewGame();
+    void StartNextLevel();
 
     void Update() override;
     void Render() override;
